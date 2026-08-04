@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>PMSS Dashboard</title>
+</head>
+
+<body>
+
+<h1>
+    Welcome back,
+    <span th:text="${user.firstName}"></span>!
+</h1>
+
+
+<div th:if="${user.role == 'CLIENT'}">
+
+    <a href="/profile">
+        <button>Profile</button>
+    </a>
+
+    <a href="/meetings/create">
+        <button>Create Meeting</button>
+    </a>
+
+    <a href="/schedule">
+        <button>Meeting Schedule</button>
+    </a>
+
+    <a href="/complaints">
+        <button>File Complaint</button>
+    </a>
+
+    <a href="/billing">
+        <button>Pay Bill</button>
+    </a>
+
+    <!-- LOG OUT -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">
+            Logout
+        </button>
+    </form>
+</div>
+
+
+<div th:if="${user.role == 'ADMINISTRATOR'}">
+
+    <a href="/profile">
+        <button>Profile</button>
+    </a>
+
+    <a href="/rooms">
+        <button>Add Room</button>
+    </a>
+
+    <a href="/complaints/list">
+        <button>Complaint List</button>
+    </a>
+
+    <a href="/admin/register">
+        <button>Register Admin</button>
+    </a>
+
+    <!-- LOG OUT -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">
+            Logout
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>
