@@ -1,25 +1,33 @@
-<form method="post" action="/login">
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-    <img th:src="@{/images/PMSS.jpg}" width="300" height="197" alt="PMSS Logo">
+<head>
+    <title>PMSS Profile</title>
+</head>
 
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
+<body>
 
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
+<div>
+    <img src="https://imgs.search.brave.com/qQqWUjBKaXT0qw79jSHEjU7MKJ48xBPQFS5rJumNlM0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dXNhdG9kYXkuY29t/L2djZG4vYXV0aG9y/aW5nL2F1dGhvcmlu/Zy1pbWFnZXMvMjAy/NS8wNy8wMi9VU0FU/Lzg0NDUyNDk3MDA3/LWdldHR5LWltYWdl/cy01MTcyODU1Mzgu/anBnP3dpZHRoPTUx/OSZoZWlnaHQ9NjYw/JmZpdD1jcm9wJmZv/cm1hdD1wanBnJmF1/dG89d2VicA" alt="profile.jpg">
 
-    <button type="submit">
-        Login
-    </button>
 
-    <p th:if="${param.error}" style="color:red;">
-        Invalid email or password.
-    </p>
-</form>
+    <h3>
+        First Name:
+        <span th:text="${user.firstName}"></span>
+    </h3>
+
+    <h3>
+        Last Name:
+        <span th:text="${user.lastName}"></span>
+    </h3>
+
+    <!-- LOG OUT -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">
+            Logout
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

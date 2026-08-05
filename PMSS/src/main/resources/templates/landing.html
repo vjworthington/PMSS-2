@@ -46,9 +46,18 @@
 
 <div th:if="${user.role == 'ADMINISTRATOR'}">
 
+
+    <!-- PROFILE -->
+    <form th:action="@{/profile}" method="post">
+        <button type="submit">
+            Profile
+        </button>
+    </form>
+    <!--
     <a href="/profile">
         <button>Profile</button>
     </a>
+    -->
 
     <a href="/rooms">
         <button>Add Room</button>

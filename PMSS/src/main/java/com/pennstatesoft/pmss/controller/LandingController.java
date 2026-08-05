@@ -17,8 +17,7 @@ public class LandingController {
     }
 
     @GetMapping("/landing")
-    public String landing(Model model,
-                          Authentication authentication) {
+    public String landing(Model model, Authentication authentication) {
 
         User user = userService.findByEmail(authentication.getName());
 

@@ -1,59 +1,26 @@
 package com.pennstatesoft.pmss.controller;
 
-//import Database.DatabaseConnect;
-//import Model.Client;
+import com.pennstatesoft.pmss.model.User;
+import com.pennstatesoft.pmss.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import com.pennstatesoft.pmss.model.Client;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+@Controller
 public class ProfileController {
 
-    public boolean validateProfile(Client client) {
+    private final UserService userService;
 
-        return client != null;
+    public ProfileController(UserService userService) {
+        this.userService = userService;
     }
 
-    public boolean updateProfile(Client client) {
+    @GetMapping("/profile")
+    public String profile(Model model, Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
 
-        return true;
-    }
-
-    public Client retrieveProfile(int userID) {
-
-        String sql = """
-                SELECT *
-                FROM Users
-                WHERE userID = ? AND role = 'CLIENT';
-                """;
-
-        /**
-        try (Connection conn = DatabaseConnect.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, userID);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-
-                return new Client(
-                        rs.getInt("userID"),
-                        rs.getString("userEmail"),
-                        rs.getString("passwordHash"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName")
-                );
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        **/
-
-        return null;
+        model.addAttribute("user", user);
+        return "profile";
     }
 }

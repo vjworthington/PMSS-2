@@ -1,7 +1,6 @@
 package com.pennstatesoft.pmss.repository;
 
 import com.pennstatesoft.pmss.model.User;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,22 +33,6 @@ public class UserRepository {
                 new UserRowMapper(),
                 email
         );
-        /**
-        String sql = """
-                SELECT *
-                FROM Users
-                WHERE userEmail = ?
-                """;
 
-        try {
-            return jdbcTemplate.queryForObject(
-                    sql,
-                    new UserRowMapper(),
-                    email
-            );
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-         **/
     }
 }

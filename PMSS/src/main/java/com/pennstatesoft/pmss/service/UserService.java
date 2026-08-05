@@ -2,8 +2,6 @@ package com.pennstatesoft.pmss.service;
 
 import com.pennstatesoft.pmss.model.User;
 import com.pennstatesoft.pmss.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
