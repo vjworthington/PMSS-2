@@ -24,7 +24,10 @@ public class UserRowMapper implements RowMapper<User> {
                     rs.getString("passwordHash"),
                     rs.getString("lastName"),
                     rs.getString("firstName"),
-                    role
+                    role,
+                    rs.getString("displayName"),
+                    rs.getString("birthDate"),
+                    rs.getBytes("profileImage")
             );
         }
 
@@ -35,7 +38,10 @@ public class UserRowMapper implements RowMapper<User> {
                     rs.getString("passwordHash"),
                     rs.getString("lastName"),
                     rs.getString("firstName"),
-                    role
+                    role,
+                    rs.getString("displayName"),
+                    rs.getString("birthDate"),
+                    rs.getBytes("profileImage")
             );
         }
 

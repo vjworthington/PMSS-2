@@ -8,9 +8,11 @@ public abstract class User {
     protected String lastName;
     protected String firstName;
     protected String role;
+    protected String displayName;
+    protected String birthDate;
+    protected byte[] profileImage;
 
-    public User(int userID, String userEmail, String passwordHash,
-                String firstName, String lastName, String role) {
+    public User(int userID, String userEmail, String passwordHash, String firstName, String lastName, String role, String displayName, String birthDate, byte[] profileImage) {
 
         this.userID = userID;
         this.userEmail = userEmail;
@@ -18,6 +20,9 @@ public abstract class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.birthDate = birthDate;
+        this.displayName = displayName;
+        this.profileImage = profileImage;
     }
 
     public int getUserID() {
@@ -54,5 +59,17 @@ public abstract class User {
 
     public String getRole() {
         return role;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
     }
 }

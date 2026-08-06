@@ -8,25 +8,14 @@
 <body>
 
 <div>
-    <img src="https://imgs.search.brave.com/qQqWUjBKaXT0qw79jSHEjU7MKJ48xBPQFS5rJumNlM0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dXNhdG9kYXkuY29t/L2djZG4vYXV0aG9y/aW5nL2F1dGhvcmlu/Zy1pbWFnZXMvMjAy/NS8wNy8wMi9VU0FU/Lzg0NDUyNDk3MDA3/LWdldHR5LWltYWdl/cy01MTcyODU1Mzgu/anBnP3dpZHRoPTUx/OSZoZWlnaHQ9NjYw/JmZpdD1jcm9wJmZv/cm1hdD1wanBnJmF1/dG89d2VicA" alt="profile.jpg">
-
-
-    <h3>
-        First Name:
-        <span th:text="${user.firstName}"></span>
-    </h3>
-
-    <h3>
-        Last Name:
-        <span th:text="${user.lastName}"></span>
-    </h3>
-
-    <!-- LOG OUT -->
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">
-            Logout
-        </button>
+    <img th:src="@{/images/PMSS.jpg}" alt="PMSS Logo">
+    <form th:action="@{/login}" method="post">
+        <input type="email" name="email">
+        <input type="password" name="password">
+        <button type="submit">Login</button>
     </form>
+
+
 </div>
 
 </body>

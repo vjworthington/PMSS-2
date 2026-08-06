@@ -7,10 +7,12 @@ public class Administrator extends User {
                          String passwordHash,
                          String firstName,
                          String lastName,
-                         String role
-    ) {
+                         String role,
+                         String birthDate,
+                         String displayName,
+                         byte[] profileImage) {
 
-        super(userID, userEmail, passwordHash, firstName, lastName, role);
+        super(userID, userEmail, passwordHash, firstName, lastName, role, birthDate, displayName, profileImage);
     }
 
     public void manageComplaint() {
@@ -30,4 +32,5 @@ public class Administrator extends User {
 
         // Adding administrator section
     }
+
 }

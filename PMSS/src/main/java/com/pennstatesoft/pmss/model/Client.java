@@ -7,9 +7,12 @@ public class Client extends User {
                   String passwordHash,
                   String lastName,
                   String firstName,
-                  String role) {
+                  String role,
+                  String birthDate,
+                  String displayName,
+                  byte[] profileImage) {
 
-        super(userID, userEmail, passwordHash, firstName, lastName, role);
+        super(userID, userEmail, passwordHash, lastName, firstName, role, birthDate, displayName, profileImage);
     }
 
     /** TODO: Remove upon completion:
