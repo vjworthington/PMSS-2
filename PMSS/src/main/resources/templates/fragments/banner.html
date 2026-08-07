@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="banner"
+     style="background:#1f2937;
+     color:white;
+     padding:15px 30px;
+     display:flex;
+     justify-content:space-between;
+     align-items:center;
+     margin-bottom:30px;">
+
+    <div>
+        <span style="font-size:22px;font-weight:bold;">
+            PMSS
+        </span>
+    </div>
+
+    <!-- BUTTONS -->
+    <div>
+        <a href="/landing">
+            <button type="button">Home</button>
+        </a>
+        <a href="/profile">
+            <button type="button">Profile</button>
+        </a>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">
+            Logout
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Complaints</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="width:1100px; margin:auto;">
+
+    <!-- Client -->
+    <div th:if="${user.role != 'ADMINISTRATOR'}">
+        <h1>File a Complaint</h1>
+        <hr>
+        <form th:action="@{/complaints}" method="post">
+            <p>
+                <label>
+                    Meeting (optional)
+                    <br><br>
+
+                    <select name="meetingID" style="width:350px;">
+                        <option value="0">
+                            -- Not related to a meeting --
+                        </option>
+
+                        <option
+                                th:each="meeting : ${meetings}"
+                                th:value="${meeting.meetingID}"
+                                th:text="${meeting.meetingName + ' (' + meeting.meetingDate + ')'}">
+                        </option>
+                    </select>
+                </label>
+            </p>
+
+            <p>
+                <label>
+                    Complaint Category
+                    <br><br>
+
+                    <select name="complaintOption" style="width:350px;">
+                        <option
+                                th:each="option : ${complaintOptions}"
+                                th:value="${option}"
+                                th:text="${option}">
+                        </option>
+                    </select>
+                </label>
+            </p>
+
+            <p>
+                <label>
+                    Description
+                    <br><br>
+
+                    <textarea
+                            name="summary"
+                            rows="6"
+                            cols="80"></textarea>
+                </label>
+            </p>
+
+            <button type="submit">
+                Submit Complaint
+            </button>
+
+        </form>
+        <br>
+        <h2>Your Complaints</h2>
+
+        <div th:if="${#lists.isEmpty(complaints)}">
+            <p>No complaints have been filed.</p>
+        </div>
+
+        <table
+                border="1"
+                cellpadding="8"
+                cellspacing="0"
+                width="100%"
+                th:if="${!#lists.isEmpty(complaints)}">
+            <tr>
+                <th>ID</th>
+                <th>Meeting</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Administrator Response</th>
+            </tr>
+
+            <tr th:each="complaint : ${complaints}">
+                <td th:text="${complaint.complaintID}"></td>
+                <td th:text="${complaint.meetingID != null ? complaint.meetingID : 'N/A'}"></td>
+                <td th:text="${complaint.complaintOption}"></td>
+                <td th:text="${complaint.summary}"></td>
+                <td th:text="${complaint.status}"></td>
+                <td>
+                    <span
+                            th:if="${complaint.adminResponse != null && !complaint.adminResponse.isBlank()}"
+                            th:text="${complaint.adminResponse}">
+                    </span>
+
+                    <span
+                            th:unless="${complaint.adminResponse != null && !complaint.adminResponse.isBlank()}">
+                        Waiting for administrator response.
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ADMIN-->
+    <div th:if="${user.role == 'ADMINISTRATOR'}">
+        <h1>Complaint Management</h1>
+        <hr>
+
+        <div th:if="${#lists.isEmpty(complaints)}">
+            <p>No complaints have been filed.</p>
+        </div>
+
+        <table
+                border="1"
+                cellpadding="8"
+                cellspacing="0"
+                width="100%"
+                th:if="${!#lists.isEmpty(complaints)}">
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Meeting</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Current Response</th>
+                <th>Action</th>
+            </tr>
+
+            <tr th:each="complaint : ${complaints}">
+                <td th:text="${complaint.complaintID}"></td>
+                <td th:text="${complaint.userID}"></td>
+                <td th:text="${complaint.meetingID}"></td>
+                <td th:text="${complaint.complaintOption}"></td>
+                <td th:text="${complaint.summary}"></td>
+                <td th:text="${complaint.status}"></td>
+                <td>
+                    <span
+                            th:if="${complaint.adminResponse != null && !complaint.adminResponse.isBlank()}"
+                            th:text="${complaint.adminResponse}">
+                    </span>
+
+                    <span
+                            th:unless="${complaint.adminResponse != null && !complaint.adminResponse.isBlank()}">
+                        No response submitted.
+                    </span>
+                </td>
+
+                <td>
+                    <a th:href="@{/complaints/{id}(id=${complaint.complaintID})}">
+                        <button>
+                            View / Respond
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

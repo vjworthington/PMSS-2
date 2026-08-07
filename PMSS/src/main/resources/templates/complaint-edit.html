@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Complaint</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="width:900px; margin:auto;">
+    <h1>Complaint Details</h1>
+    <hr>
+    <table border="1"
+           cellpadding="8"
+           cellspacing="0"
+           width="100%">
+        <tr>
+            <th align="left">Complaint ID</th>
+            <td th:text="${complaint.complaintID}"></td>
+        </tr>
+
+        <tr>
+            <th align="left">User ID</th>
+            <td th:text="${complaint.userID}"></td>
+        </tr>
+
+        <tr>
+            <th align="left">Meeting ID</th>
+            <td th:text="${complaint.meetingID}"></td>
+        </tr>
+
+        <tr>
+            <th align="left">Category</th>
+            <td th:text="${complaint.complaintOption}"></td>
+        </tr>
+
+        <tr>
+            <th align="left">Description</th>
+            <td th:text="${complaint.summary}"></td>
+        </tr>
+
+        <tr>
+            <th align="left">Current Status</th>
+            <td th:text="${complaint.status}"></td>
+        </tr>
+    </table>
+    <br>
+
+    <h2>Update Status</h2>
+    <form
+            th:action="@{/complaints/{id}/status(id=${complaint.complaintID})}"
+            method="post">
+        <select name="newStatus">
+            <option
+                    value="PENDING"
+                    th:selected="${complaint.status == 'PENDING'}">
+                Pending
+            </option>
+            <option
+                    value="IN PROGRESS"
+                    th:selected="${complaint.status == 'IN PROGRESS'}">
+                In Progress
+            </option>
+
+            <option
+                    value="RESOLVED"
+                    th:selected="${complaint.status == 'RESOLVED'}">
+                Resolved
+            </option>
+
+        </select>
+        <button type="submit">
+            Update Status
+        </button>
+    </form>
+    <br>
+
+    <h2>Administrator Response</h2>
+    <form
+            th:action="@{/complaints/{id}/respond(id=${complaint.complaintID})}"
+            method="post">
+        <textarea
+                name="adminResponse"
+                rows="8"
+                cols="90"
+                th:text="${complaint.adminResponse}">
+        </textarea>
+        <br><br>
+
+        <button type="submit">
+            Save Response
+        </button>
+    </form>
+    <br>
+
+    <a href="/complaints/list">
+        <button>
+            Back to Complaint List
+        </button>
+    </a>
+</div>
+
+</body>
+</html>
