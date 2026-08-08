@@ -10,15 +10,6 @@
 
 <div th:replace="~{fragments/banner :: banner}"></div>
 
-<!-- Notes:
-        this.userID = userID;
-        this.userEmail = userEmail;
-        this.passwordHash = passwordHash;
-        this.firstName = firstName;DONE
-        this.lastName = lastName;DONE
-        this.role = role;
-        -->
-
 <div>
     <table>
         <tr>
@@ -49,14 +40,12 @@
     </table>
 
     <!-- PROFILE -->
-    <form th:action="@{/editprofile}" method="post">
+    <form th:action="@{/profile-edit}" method="get">
         <button type="submit">
             Edit Profile
         </button>
     </form>
 </div>
-
-
 
 </body>
 </html>

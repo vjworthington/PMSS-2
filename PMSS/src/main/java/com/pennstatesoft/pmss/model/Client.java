@@ -12,7 +12,7 @@ public class Client extends User {
                   String displayName,
                   byte[] profileImage) {
 
-        super(userID, userEmail, passwordHash, lastName, firstName, role, birthDate, displayName, profileImage);
+        super(userID, userEmail, passwordHash, firstName, lastName, role, birthDate, displayName, profileImage);
     }
 
     /** TODO: Remove upon completion:

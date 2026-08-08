@@ -33,6 +33,8 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers("/client/**").hasRole("CLIENT")
+
 
                         .requestMatchers("/profile/**").authenticated()
 
@@ -42,10 +44,23 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
-                        .passwordParameter("password")
+                        .successHandler((request, response, authentication) -> {
+
+                            if (authentication.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR"))) {
+
+                                response.sendRedirect("/admin/landing");
+
+                            } else if (authentication.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_CLIENT"))) {
+
+                                response.sendRedirect("/client/landing");
+
+                            } else {
+                                response.sendRedirect("/login?error");
+                            }
+                        })
                         .failureUrl("/login?error")
-                        .defaultSuccessUrl("/landing", true)
-                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
