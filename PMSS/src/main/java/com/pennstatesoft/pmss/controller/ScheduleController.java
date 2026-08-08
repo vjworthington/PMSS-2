@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/schedule")
-public class ScheduleController {
+public class ScheduleController implements AdminScheduleControllerIF {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
@@ -146,6 +146,7 @@ public class ScheduleController {
         return "schedule";
     }
 
+    @Override
     public List<Meeting> getCreatedMeetings(User user) {
         String sql = """
             SELECT * FROM Meetings
@@ -156,6 +157,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getParticipatingMeetings(User user) {
         String sql = """
             SELECT m.* FROM Meetings m
@@ -167,6 +169,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getUsersMeetings(User user) {
         String sql = """
             SELECT DISTINCT m.* FROM Meetings m
@@ -178,6 +181,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getMeetingsByDay(Date date) {
         String sql = """
             SELECT * FROM Meetings
@@ -188,6 +192,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getMeetingsByWeek(Date weekStart) {
         LocalDate start = weekStart.toLocalDate();
         LocalDate end = start.plusDays(6);
@@ -200,6 +205,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getMeetingsByRoom(Room room) {
         String sql = """
             SELECT * FROM Meetings
@@ -210,6 +216,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getMeetingsByPerson(User user) {
         String sql = """
             SELECT DISTINCT m.* FROM Meetings m
@@ -221,6 +228,7 @@ public class ScheduleController {
         return meetings;
     }
 
+    @Override
     public List<Meeting> getMeetingsByTimeSlot(Time startTime, Time endTime) {
         String sql = """
             SELECT * FROM Meetings
