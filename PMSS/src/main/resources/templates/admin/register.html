@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register Administrator</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:500px; width:90%; margin:auto;">
+    <h1>Register Administrator</h1>
+    <hr>
+
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+
+    <form th:action="@{/admin/register}" method="post">
+        <p>
+            <label>First Name<br>
+                <input type="text" name="firstName" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Last Name<br>
+                <input type="text" name="lastName" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Email<br>
+                <input type="email" name="email" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Password<br>
+                <input type="password" name="password" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Birth Date<br>
+                <input type="date" name="birthDate" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+
+        <br>
+        <button type="submit" style="width:200px;height:40px;">
+            Create Administrator
+        </button>
+    </form>
+</div>
+</body>
+</html>
