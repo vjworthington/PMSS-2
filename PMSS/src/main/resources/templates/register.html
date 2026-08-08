@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>PMSS Register</title>
+</head>
+
+<body>
+<div style="max-width:400px; width:90%; margin:60px auto; text-align:center;">
+    <img th:src="@{/images/PMSS.jpg}" alt="PMSS Logo" width="220">
+
+    <h2>Create Your Account</h2>
+
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+
+    <form th:action="@{/register}" method="post" style="text-align:left;">
+        <p>
+            <label>First Name<br>
+                <input type="text" name="firstName" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Last Name<br>
+                <input type="text" name="lastName" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Email<br>
+                <input type="email" name="email" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Password<br>
+                <input type="password" name="password" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Birth Date<br>
+                <input type="date" name="birthDate" required style="width:250px;padding:8px;">
+            </label>
+        </p>
+
+        <div style="text-align:center;">
+            <br>
+            <button type="submit" style="width:160px;height:35px;">
+                Create Account
+            </button>
+        </div>
+    </form>
+
+    <p style="margin-top:20px;">
+        Already have an account?
+        <a th:href="@{/login}">Log in</a>
+    </p>
+</div>
+</body>
+</html>
