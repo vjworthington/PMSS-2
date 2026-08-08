@@ -1,7 +1,5 @@
 package com.pennstatesoft.pmss.controller;
 
-import com.pennstatesoft.pmss.model.Administrator;
-import com.pennstatesoft.pmss.model.Client;
 import com.pennstatesoft.pmss.service.UserService;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,11 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Date;
 
 /**
- * Controller implementation for the Register module
+ * Controller implementation for the Register module.
  *
- * Implements AdminScheduleControllerIF's counterpart RegisterAdminControllerIF
- * (which extends RegisterControllerIF), so it provides every account-creation
- * method
+ * Implements RegisterAdminControllerIF (which extends RegisterControllerIF),
+ * so it provides every account-creation method.
  */
 @Controller
 public class RegisterController implements RegisterAdminControllerIF {
@@ -102,16 +99,15 @@ public class RegisterController implements RegisterAdminControllerIF {
         this.pendingPassword = password;
         this.pendingBirthDate = parseDate(birthDate);
 
-        if (!checkEmailUnique(this.pendingEmail)) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "An account with that email already exists.");
+        if (checkEmailUnique(this.pendingEmail)) {
+            createAdmin();
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Administrator account created for " + this.pendingEmail + ".");
             return "redirect:/admin/register";
         }
 
-        createAdmin();
-
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Administrator account created for " + this.pendingEmail + ".");
+        redirectAttributes.addFlashAttribute("errorMessage",
+                "An account with that email already exists.");
         return "redirect:/admin/register";
     }
 
@@ -121,31 +117,28 @@ public class RegisterController implements RegisterAdminControllerIF {
         this.pendingPassword = password;
         this.pendingBirthDate = birthDate;
 
-        if (!checkEmailUnique(email)) {
-            return false;
+        if (checkEmailUnique(email)) {
+            createClient();
+            return true;
         }
-
-        createClient();
-        return true;
+        return false;
     }
 
     @Override
     public boolean checkEmailUnique(String email) {
         Integer count = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM Users WHERE userEmail = ?", Integer.class, email);
-        return count != null && count == 0;
+        return count == 0;
     }
 
     @Override
-    public Client createClient() {
+    public void createClient() {
         insertUser("CLIENT");
-        return (Client) userService.findByEmail(pendingEmail);
     }
 
     @Override
-    public Administrator createAdmin() {
+    public void createAdmin() {
         insertUser("ADMINISTRATOR");
-        return (Administrator) userService.findByEmail(pendingEmail);
     }
 
     // Helper Methods

@@ -1,7 +1,5 @@
 package com.pennstatesoft.pmss.controller;
 
-import com.pennstatesoft.pmss.model.Administrator;
-
 /**
  * Controller interface referenced by RegisterAdminDashboard
  * Inherits the Client-facing prototypes from RegisterControllerIF and adds the
@@ -9,5 +7,5 @@ import com.pennstatesoft.pmss.model.Administrator;
  */
 public interface RegisterAdminControllerIF extends RegisterControllerIF {
 
-    Administrator createAdmin();
+    void createAdmin();
 }

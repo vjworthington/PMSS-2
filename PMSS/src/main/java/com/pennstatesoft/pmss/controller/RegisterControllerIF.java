@@ -1,7 +1,5 @@
 package com.pennstatesoft.pmss.controller;
 
-import com.pennstatesoft.pmss.model.Client;
-
 import java.util.Date;
 
 /**
@@ -15,5 +13,5 @@ public interface RegisterControllerIF {
 
     boolean checkEmailUnique(String email);
 
-    Client createClient();
+    void createClient();
 }
