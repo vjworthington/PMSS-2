@@ -65,12 +65,12 @@
                 <label>
                     Filter by
                     <select name="filter" style="width:220px;">
-                        <option value="all" th:selected="${filter == 'all'}">Show all</option>
+                        <option value="all" th:selected="${filter == 'all'}">Show All</option>
                         <option value="day" th:selected="${filter == 'day'}">Day</option>
                         <option value="week" th:selected="${filter == 'week'}">Week</option>
                         <option value="room" th:selected="${filter == 'room'}">Room</option>
                         <option value="person" th:selected="${filter == 'person'}">Person</option>
-                        <option value="timeslot" th:selected="${filter == 'timeslot'}">Time slot</option>
+                        <option value="timeslot" th:selected="${filter == 'timeslot'}">Time Slot</option>
                     </select>
                 </label>
             </p>
@@ -114,13 +114,13 @@
             </p>
 
             <p>
-                <label>Time slot:
+                <label>Time Slot:
                     <select name="timeSlot" style="width:220px;">
-                        <option value="">-- Select time slot --</option>
+                        <option value="">-- Select Time Slot --</option>
                         <option th:each="slot : ${timeSlots}"
-                                th:value="${slot}"
-                                th:selected="${timeSlot == slot}"
-                                th:text="${slot}">
+                                th:value="${slot.key}"
+                                th:selected="${timeSlot == slot.key}"
+                                th:text="${slot.value}">
                         </option>
                     </select>
                 </label>

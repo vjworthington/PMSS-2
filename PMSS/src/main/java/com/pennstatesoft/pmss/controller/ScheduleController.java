@@ -20,6 +20,7 @@ import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -269,9 +270,15 @@ public class ScheduleController implements AdminScheduleControllerIF {
         """);
     }
 
-    private List<String> businessHourSlots() {
-        return List.of("09:00", "10:00", "11:00", "12:00",
-                "13:00", "14:00", "15:00", "16:00");
+    // Ordered map of each slot's start time to its "start-end" display label.
+    private Map<String, String> businessHourSlots() {
+        Map<String, String> slots = new LinkedHashMap<>();
+        for (int hour = 9; hour <= 16; hour++) {
+            String start = String.format("%02d:00", hour);
+            String end = String.format("%02d:00", hour + 1);
+            slots.put(start, start + "-" + end);
+        }
+        return slots;
     }
 
     private Time normalizeTime(String value) {
