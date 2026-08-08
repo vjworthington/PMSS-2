@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 
@@ -139,7 +141,7 @@ public class ScheduleController implements AdminScheduleControllerIF {
         model.addAttribute("personID", personID);
         model.addAttribute("timeSlot", timeSlot);
         model.addAttribute("rooms", findAllRooms());
-        model.addAttribute("people", findAllClients());
+        model.addAttribute("people", findAllUsers());
         model.addAttribute("timeSlots", businessHourSlots());
         model.addAttribute("meetings", displayed);
 
@@ -194,8 +196,9 @@ public class ScheduleController implements AdminScheduleControllerIF {
 
     @Override
     public List<Meeting> getMeetingsByWeek(Date weekStart) {
-        LocalDate start = weekStart.toLocalDate();
-        LocalDate end = start.plusDays(6);
+        LocalDate dateInWeek = weekStart.toLocalDate();
+        LocalDate start = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate end = start.plusDays(6); // Sunday of the same week
         String sql = """
             SELECT * FROM Meetings
             WHERE meetingDate BETWEEN ? AND ?
@@ -258,12 +261,11 @@ public class ScheduleController implements AdminScheduleControllerIF {
                 "SELECT roomNumber, roomType FROM Rooms ORDER BY roomNumber");
     }
 
-    private List<Map<String, Object>> findAllClients() {
+    private List<Map<String, Object>> findAllUsers() {
         return jdbcTemplate.queryForList("""
-            // SELECT userID, firstName, lastName, displayName
-            // FROM Users
-            // WHERE role = 'CLIENT'
-            // ORDER BY lastName, firstName
+            SELECT userID, firstName, lastName, displayName
+            FROM Users
+            ORDER BY lastName, firstName
         """);
     }
 
