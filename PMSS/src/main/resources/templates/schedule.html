@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meeting Schedule</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:1100px; width: 90%; margin:auto;">
+
+    <!-- CLIENT: ScheduleDashboard -->
+    <div th:if="${user.role != 'ADMINISTRATOR'}">
+        <h1>My Meeting Schedule</h1>
+        <hr>
+
+        <form th:action="@{/schedule}" method="get">
+            <label>
+                Show
+                <select name="view" onchange="this.form.submit()" style="width:250px;">
+                    <option value="all" th:selected="${view == 'all'}">All My Meetings</option>
+                    <option value="created" th:selected="${view == 'created'}">Meetings I Created</option>
+                    <option value="participating" th:selected="${view == 'participating'}">Meetings I'm Attending</option>
+                </select>
+            </label>
+        </form>
+        <br>
+
+        <div>
+            <div th:if="${#lists.isEmpty(meetings)}">
+                <p>No meetings to display.</p>
+            </div>
+
+            <table border="1" cellpadding="8" cellspacing="0" width="100%"
+                   th:if="${!#lists.isEmpty(meetings)}">
+                <tr>
+                    <th>ID</th>
+                    <th>Meeting</th>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Room</th>
+                    <th>Status</th>
+                </tr>
+                <tr th:each="meeting : ${meetings}">
+                    <td th:text="${meeting.meetingID}"></td>
+                    <td th:text="${meeting.meetingName}"></td>
+                    <td th:text="${meeting.meetingDate}"></td>
+                    <td th:text="${meeting.startTime}"></td>
+                    <td th:text="${meeting.endTime}"></td>
+                    <td th:text="${meeting.roomNumber}"></td>
+                    <td th:text="${meeting.status}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ADMIN: AdminScheduleDashboard -->
+    <div th:if="${user.role == 'ADMINISTRATOR'}">
+        <h1>Meeting Schedule (All Meetings)</h1>
+        <hr>
+
+        <h3>Filter Meetings</h3>
+        <form th:action="@{/schedule}" method="get">
+            <p>
+                <label>
+                    Filter by
+                    <select name="filter" style="width:220px;">
+                        <option value="all" th:selected="${filter == 'all'}">Show All</option>
+                        <option value="day" th:selected="${filter == 'day'}">Day</option>
+                        <option value="week" th:selected="${filter == 'week'}">Week</option>
+                        <option value="room" th:selected="${filter == 'room'}">Room</option>
+                        <option value="person" th:selected="${filter == 'person'}">Person</option>
+                        <option value="timeslot" th:selected="${filter == 'timeslot'}">Time Slot</option>
+                    </select>
+                </label>
+            </p>
+
+            <p>
+                <label>Day:
+                    <input type="date" name="day" th:value="${day}">
+                </label>
+            </p>
+
+            <p>
+                <label>Week (start date):
+                    <input type="date" name="weekStart" th:value="${weekStart}">
+                </label>
+            </p>
+
+            <p>
+                <label>Room:
+                    <select name="roomNumber" style="width:220px;">
+                        <option value="">-- Select room --</option>
+                        <option th:each="room : ${rooms}"
+                                th:value="${room.roomNumber}"
+                                th:selected="${roomNumber != null and roomNumber == room.roomNumber}"
+                                th:text="${'Room ' + room.roomNumber + ' (' + room.roomType + ')'}">
+                        </option>
+                    </select>
+                </label>
+            </p>
+
+            <p>
+                <label>Person:
+                    <select name="personID" style="width:220px;">
+                        <option value="">-- Select person --</option>
+                        <option th:each="person : ${people}"
+                                th:value="${person.userID}"
+                                th:selected="${personID != null and personID == person.userID}"
+                                th:text="${person.firstName + ' ' + person.lastName}">
+                        </option>
+                    </select>
+                </label>
+            </p>
+
+            <p>
+                <label>Time Slot:
+                    <select name="timeSlot" style="width:220px;">
+                        <option value="">-- Select Time Slot --</option>
+                        <option th:each="slot : ${timeSlots}"
+                                th:value="${slot.key}"
+                                th:selected="${timeSlot == slot.key}"
+                                th:text="${slot.value}">
+                        </option>
+                    </select>
+                </label>
+            </p>
+
+            <button type="submit">Apply Filter</button>
+            <a th:href="@{/schedule}"><button type="button">Clear</button></a>
+        </form>
+        <br>
+
+        <div>
+            <div th:if="${#lists.isEmpty(meetings)}">
+                <p>No meetings to display.</p>
+            </div>
+
+            <table border="1" cellpadding="8" cellspacing="0" width="100%"
+                   th:if="${!#lists.isEmpty(meetings)}">
+                <tr>
+                    <th>ID</th>
+                    <th>Meeting</th>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Room</th>
+                    <th>Status</th>
+                </tr>
+                <tr th:each="meeting : ${meetings}">
+                    <td th:text="${meeting.meetingID}"></td>
+                    <td th:text="${meeting.meetingName}"></td>
+                    <td th:text="${meeting.meetingDate}"></td>
+                    <td th:text="${meeting.startTime}"></td>
+                    <td th:text="${meeting.endTime}"></td>
+                    <td th:text="${meeting.roomNumber}"></td>
+                    <td th:text="${meeting.status}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
