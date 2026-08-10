@@ -10,15 +10,13 @@
 <div th:replace="~{fragments/banner :: banner}"></div>
 
 <div>
-  <table>
+    <table align="center">
     <tr>
       <td>
         <img src="/profile-image" alt="Profile Image">
       <td>
         <h1>Edit Profile</h1>
-      <form method="post"
-            action="/profile-edit"
-            enctype="multipart/form-data">
+      <form method="post" action="/profile-edit" enctype="multipart/form-data">
           <span th:text="${user.firstName}"></span>
           <span th:text="${user.lastName}"></span>
 

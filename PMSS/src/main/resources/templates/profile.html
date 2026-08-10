@@ -11,7 +11,7 @@
 <div th:replace="~{fragments/banner :: banner}"></div>
 
 <div>
-    <table>
+    <table align="center">
         <tr>
             <td>
                 <img src="/profile-image" alt="Profile Image">
@@ -40,7 +40,7 @@
     </table>
 
     <!-- PROFILE -->
-    <form th:action="@{/profile-edit}" method="get">
+    <form th:action="@{/profile-edit}" method="get" align="center">
         <button type="submit">
             Edit Profile
         </button>

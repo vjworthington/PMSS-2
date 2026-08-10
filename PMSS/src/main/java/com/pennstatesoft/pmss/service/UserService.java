@@ -21,22 +21,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
-        System.out.println("USER ROLE: " + user.getRole());
-        System.out.println("USER TYPE: " + user.getClass());
 
-        System.out.println("LOGIN EMAIL: " + email);
-
-        System.out.println("DATABASE USER: " + user);
-
-        System.out.println("HASH FROM DATABASE: " + user.getPasswordHash());
-
-        if (user == null) {
+        try {
+            user = userRepository.findByEmail(email);
+        } catch (Exception e) {
             throw new UsernameNotFoundException("User not found");
         }
-
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserEmail())
                 .password(user.getPasswordHash())
@@ -59,8 +51,7 @@ public class UserService implements UserDetailsService {
             byte[] imageBytes;
 
             try {
-                BufferedImage bufferedImage =
-                        ImageIO.read(image.getInputStream());
+                BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
 
                 if (bufferedImage == null) {
                     throw new IllegalArgumentException(
@@ -69,19 +60,15 @@ public class UserService implements UserDetailsService {
 
                 String contentType = image.getContentType();
 
-                if (!"image/jpeg".equals(contentType)
-                        && !"image/png".equals(contentType)) {
-                    throw new IllegalArgumentException(
-                            "Image must be JPG or PNG.");
+                if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
+                    throw new IllegalArgumentException("Image must be JPG or PNG.");
                 }
 
                 int width = bufferedImage.getWidth();
                 int height = bufferedImage.getHeight();
 
-                if (width < 500 || width > 1000
-                        || height < 500 || height > 1000) {
-                    throw new IllegalArgumentException(
-                            "Image width and height must each be between 500 and 1000 pixels.");
+                if (width < 500 || width > 1000 || height < 500 || height > 1000) {
+                    throw new IllegalArgumentException("Image width and height must each be between 500 and 1000 pixels.");
                 }
 
                 imageBytes = image.getBytes();
@@ -95,12 +82,10 @@ public class UserService implements UserDetailsService {
                 );
 
             } catch (IOException e) {
-                throw new RuntimeException(
-                        "Could not process image.", e);
+                throw new RuntimeException("Could not process image.", e);
             }
 
         } else {
-
             // No new image → keep existing image
             userRepository.updateProfileWithoutImage(
                     email,

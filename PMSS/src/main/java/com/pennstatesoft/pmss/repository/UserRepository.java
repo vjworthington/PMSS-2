@@ -3,7 +3,6 @@ package com.pennstatesoft.pmss.repository;
 import com.pennstatesoft.pmss.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 @Repository
 public class UserRepository {
@@ -14,15 +13,7 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public User findByEmail(String email) {
-
-        System.out.println(
-                "USERS IN DATABASE: " +
-                jdbcTemplate.queryForList(
-                        "SELECT userID, userEmail, role FROM Users"
-                )
-        );
 
         String sql = """
         SELECT *
@@ -35,8 +26,6 @@ public class UserRepository {
            new UserRowMapper(),
            email
             );
-
-
     }
 
     public void updateProfile(
