@@ -28,9 +28,27 @@ public class SecurityLogger {
         logger.warn("ADMIN_ACCOUNT_CREATED creator={} newAdmin={}", creatorEmail, newAdminEmail);
     }
 
+    // Create client account
+
     // Profile change
     public void profileChanged(String email) {
         logger.info("PROFILE_CHANGED user={}", email);
     }
+
+    // Create New Room
+
+    // Delete Room
+
+    // Create Meeting
+
+    // Add Attendee to meeting
+
+    // Delete Meeting
+
+    // Pay Bill
+
+    // Filed Complaint
+
+    // Resolved Complaint
 
 }
