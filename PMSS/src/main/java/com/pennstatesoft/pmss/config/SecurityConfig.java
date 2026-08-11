@@ -1,6 +1,11 @@
 package com.pennstatesoft.pmss.config;
 
+import com.pennstatesoft.pmss.security.LoginFailureHandler;
+import com.pennstatesoft.pmss.security.LoginSuccessHandler;
+import com.pennstatesoft.pmss.security.PmssAccessDeniedHandler;
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,14 +19,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserService userService;
+    private final SecurityLogger securityLogger;
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, SecurityLogger securityLogger) {
         this.userService = userService;
+        this.securityLogger = securityLogger;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
@@ -32,45 +38,50 @@ public class SecurityConfig {
                                 "/js/**"
                         ).permitAll()
 
-                        .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
-                        .requestMatchers("/client/**").hasRole("CLIENT")
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMINISTRATOR")
 
+                        .requestMatchers("/client/**")
+                        .hasRole("CLIENT")
 
-                        .requestMatchers("/profile/**").authenticated()
+                        .requestMatchers("/profile/**")
+                        .authenticated()
 
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
-                        .successHandler((request, response, authentication) -> {
-
-                            if (authentication.getAuthorities().stream()
-                                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR"))) {
-
-                                response.sendRedirect("/admin/landing");
-
-                            } else if (authentication.getAuthorities().stream()
-                                    .anyMatch(a -> a.getAuthority().equals("ROLE_CLIENT"))) {
-
-                                response.sendRedirect("/client/landing");
-
-                            } else {
-                                response.sendRedirect("/login?error");
-                            }
-                        })
-                        .failureUrl("/login?error")
+                        .passwordParameter("password")
+                        .successHandler(new LoginSuccessHandler(securityLogger))
+                        .failureHandler(new LoginFailureHandler(securityLogger))
                 )
+
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+
+                                    if (authentication != null) {
+                                        securityLogger.logout(authentication.getName());
+                                    }
+
+                                    response.sendRedirect("/login");
+                                }
+                        )
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(new PmssAccessDeniedHandler(securityLogger))
                 )
+
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider());
 
         return http.build();
