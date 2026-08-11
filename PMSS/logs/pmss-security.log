@@ -1,2 +1,4 @@
 2026-08-11 09:30:38 INFO  LOGIN_SUCCESS user=client@test.com
 2026-08-11 09:30:40 INFO  LOGOUT user=client@test.com
+2026-08-11 11:06:09 INFO  LOGIN_SUCCESS user=admin@test.com
+2026-08-11 11:06:14 INFO  LOGOUT user=admin@test.com

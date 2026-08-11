@@ -81,7 +81,11 @@ public class SecurityConfig {
                 )
 
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionFixation(sessionFixation -> sessionFixation
+                                .changeSessionId()
+                        )
+                )
                 .authenticationProvider(authenticationProvider());
 
         return http.build();
