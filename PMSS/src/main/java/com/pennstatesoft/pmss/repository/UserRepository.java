@@ -38,7 +38,7 @@ public class UserRepository {
             UPDATE Users
             SET displayName = ?,
                 birthDate = ?,
-                image = ?
+                profileImage = ?
             WHERE userEmail = ?
             """;
 
