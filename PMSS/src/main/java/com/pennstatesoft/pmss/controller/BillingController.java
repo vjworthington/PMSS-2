@@ -1,6 +1,7 @@
 package com.pennstatesoft.pmss.controller;
 
 import com.pennstatesoft.pmss.model.User;
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,10 +25,12 @@ public class BillingController {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
+    private final SecurityLogger securityLogger;
 
-    public BillingController(JdbcTemplate jdbcTemplate, UserService userService) {
+    public BillingController(JdbcTemplate jdbcTemplate, UserService userService, SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
         this.userService = userService;
+        this.securityLogger = securityLogger;
     }
 
     // Client: manage own card on file
@@ -55,6 +58,7 @@ public class BillingController {
         }
 
         saveCard(user.getUserID(), cardholderName, cardType, cardNumber, cardExpiry);
+        securityLogger.billingUpdated(authentication.getName(), user.getUserID());
         redirectAttributes.addFlashAttribute("successMessage", "Payment information updated.");
         return "redirect:/billing";
     }
@@ -90,6 +94,7 @@ public class BillingController {
                                      @RequestParam(name = "cardType", required = false) String cardType,
                                      @RequestParam(name = "cardNumber", required = false) String cardNumber,
                                      @RequestParam(name = "cardExpiry", required = false) String cardExpiry,
+                                     Authentication authentication,
                                      RedirectAttributes redirectAttributes) {
         String error = validateCard(cardholderName, cardNumber, cardExpiry);
         if (error != null) {
@@ -98,6 +103,7 @@ public class BillingController {
         }
 
         saveCard(userID, cardholderName, cardType, cardNumber, cardExpiry);
+        securityLogger.billingUpdated(authentication.getName(), userID);
         redirectAttributes.addFlashAttribute("successMessage", "Billing information updated.");
         return "redirect:/admin/billing";
     }

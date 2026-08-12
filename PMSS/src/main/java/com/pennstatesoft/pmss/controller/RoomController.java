@@ -1,5 +1,6 @@
 package com.pennstatesoft.pmss.controller;
 
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,10 +26,12 @@ public class RoomController {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
+    private final SecurityLogger securityLogger;
 
-    public RoomController(JdbcTemplate jdbcTemplate, UserService userService) {
+    public RoomController(JdbcTemplate jdbcTemplate, UserService userService, SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
         this.userService = userService;
+        this.securityLogger = securityLogger;
     }
 
     @GetMapping
@@ -42,6 +45,7 @@ public class RoomController {
     public String addRoom(@RequestParam(name = "roomNumber", required = false) Integer roomNumber,
                           @RequestParam(name = "roomType", required = false) String roomType,
                           @RequestParam(name = "fee", required = false) Double fee,
+                          Authentication authentication,
                           RedirectAttributes redirectAttributes) {
 
         if (roomNumber == null || roomNumber <= 0) {
@@ -66,6 +70,7 @@ public class RoomController {
                 "INSERT INTO Rooms (roomNumber, isOccupied, fee, roomType) VALUES (?, 0, ?, ?)",
                 roomNumber, roomFee, type);
 
+        securityLogger.roomCreated(authentication.getName(), roomNumber);
         redirectAttributes.addFlashAttribute("successMessage",
                 "Room " + roomNumber + " (" + type + ") added.");
         return "redirect:/admin/rooms";
@@ -73,6 +78,7 @@ public class RoomController {
 
     @PostMapping("/{roomNumber}/delete")
     public String deleteRoom(@PathVariable("roomNumber") int roomNumber,
+                             Authentication authentication,
                              RedirectAttributes redirectAttributes) {
 
         // Block deletion of a room that still has meetings.
@@ -86,6 +92,7 @@ public class RoomController {
         }
 
         jdbcTemplate.update("DELETE FROM Rooms WHERE roomNumber = ?", roomNumber);
+        securityLogger.roomDeleted(authentication.getName(), roomNumber);
         redirectAttributes.addFlashAttribute("successMessage", "Room " + roomNumber + " deleted.");
         return "redirect:/admin/rooms";
     }

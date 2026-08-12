@@ -1,6 +1,7 @@
 package com.pennstatesoft.pmss.controller;
 
 import com.pennstatesoft.pmss.model.User;
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
 
     private final UserService userService;
+    private final SecurityLogger securityLogger;
 
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, SecurityLogger securityLogger) {
         this.userService = userService;
+        this.securityLogger = securityLogger;
     }
 
     @GetMapping("/profile")
@@ -54,6 +57,7 @@ public class ProfileController {
                 image
         );
 
+        securityLogger.profileChanged(currentEmail);
         return "redirect:/profile";
     }
 }

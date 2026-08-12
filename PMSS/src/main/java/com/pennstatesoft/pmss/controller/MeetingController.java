@@ -2,6 +2,7 @@ package com.pennstatesoft.pmss.controller;
 
 import com.pennstatesoft.pmss.model.Meeting;
 import com.pennstatesoft.pmss.model.User;
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.MeetingService;
 import com.pennstatesoft.pmss.service.UserService;
 
@@ -27,13 +28,16 @@ public class MeetingController {
     private final MeetingService meetingService;
     private final UserService userService;
     private final JdbcTemplate jdbcTemplate;
+    private final SecurityLogger securityLogger;
 
     public MeetingController(MeetingService meetingService,
                              UserService userService,
-                             JdbcTemplate jdbcTemplate) {
+                             JdbcTemplate jdbcTemplate,
+                             SecurityLogger securityLogger) {
         this.meetingService = meetingService;
         this.userService = userService;
         this.jdbcTemplate = jdbcTemplate;
+        this.securityLogger = securityLogger;
     }
 
     // The meetings list is consolidated into the Schedule page; /meetings redirects there.
@@ -114,6 +118,7 @@ public class MeetingController {
         meeting.setStatus("SCHEDULED");
 
         meetingService.createMeeting(meeting);
+        securityLogger.meetingCreated(authentication.getName(), meeting.getMeetingName());
 
         String successMessage = (special && fee > 0)
                 ? "Meeting \"" + meeting.getMeetingName() + "\" reserved — $"
@@ -217,6 +222,7 @@ public class MeetingController {
 
         jdbcTemplate.update("DELETE FROM MeetingAttendees WHERE meetingID = ?", id);
         meetingService.deleteMeeting(id);
+        securityLogger.meetingDeleted(authentication.getName(), id);
 
         redirectAttributes.addFlashAttribute("successMessage",
                 "Meeting \"" + meeting.getMeetingName() + "\" deleted.");
@@ -255,6 +261,7 @@ public class MeetingController {
         jdbcTemplate.update(
                 "INSERT OR IGNORE INTO MeetingAttendees (meetingID, userID) VALUES (?, ?)",
                 id, participantID);
+        securityLogger.attendeeAdded(authentication.getName(), id, participantID);
         redirectAttributes.addFlashAttribute("successMessage", "Participant added.");
         return "redirect:/meetings/" + id + "/edit";
     }
@@ -276,6 +283,7 @@ public class MeetingController {
         jdbcTemplate.update(
                 "DELETE FROM MeetingAttendees WHERE meetingID = ? AND userID = ?",
                 id, participantID);
+        securityLogger.attendeeRemoved(authentication.getName(), id, participantID);
         redirectAttributes.addFlashAttribute("successMessage", "Participant removed.");
         return "redirect:/meetings/" + id + "/edit";
     }

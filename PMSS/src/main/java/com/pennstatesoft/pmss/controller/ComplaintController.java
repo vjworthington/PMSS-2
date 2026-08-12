@@ -3,6 +3,7 @@ package com.pennstatesoft.pmss.controller;
 import com.pennstatesoft.pmss.model.Complaint;
 import com.pennstatesoft.pmss.model.User;
 import com.pennstatesoft.pmss.repository.ComplaintRowMapper;
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
@@ -28,13 +29,16 @@ public class ComplaintController {
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
     private final ComplaintRowMapper complaintRowMapper;
+    private final SecurityLogger securityLogger;
 
     public ComplaintController(JdbcTemplate jdbcTemplate,
                                UserService userService,
-                               ComplaintRowMapper complaintRowMapper) {
+                               ComplaintRowMapper complaintRowMapper,
+                               SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
         this.userService = userService;
         this.complaintRowMapper = complaintRowMapper;
+        this.securityLogger = securityLogger;
     }
 
     @GetMapping
@@ -78,6 +82,7 @@ public class ComplaintController {
 
         Complaint complaint = new Complaint(user.getUserID(), meetingID, complaintOption, summary);
         insertComplaint(complaint);
+        securityLogger.complaintFiled(authentication.getName(), meetingID);
 
         redirectAttributes.addFlashAttribute("successMessage",
                 "Your complaint has been submitted.");
@@ -147,6 +152,7 @@ public class ComplaintController {
 
         complaint.setAdminResponse(adminResponse);
         updateComplaintResponse(complaint);
+        securityLogger.complaintResolved(authentication.getName(), complaintID);
 
         redirectAttributes.addFlashAttribute("successMessage",
                 "Response submitted. Complaint marked as resolved.");
