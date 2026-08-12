@@ -1,3 +1,12 @@
 2026-08-12 06:56:01 INFO  LOGIN_SUCCESS user=admin@test.com
 2026-08-12 07:04:52 INFO  LOGIN_SUCCESS user=admin@test.com
 2026-08-12 07:29:35 INFO  MEETING_CREATED user=admin@test.com meeting="Standup Meeting"
+2026-08-12 13:38:02 INFO  LOGIN_SUCCESS user=client@test.com
+2026-08-12 13:38:19 INFO  LOGOUT user=client@test.com
+2026-08-12 13:43:25 INFO  CLIENT_ACCOUNT_CREATED user=dprince@pennstatesoft.com
+2026-08-12 13:43:36 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
+2026-08-12 13:43:50 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
+2026-08-12 13:43:58 WARN  ACCOUNT_LOCKED user=dprince@pennstatesoft.com duration=15_minutes
+2026-08-12 13:43:58 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
+2026-08-12 13:51:40 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
+2026-08-12 13:51:40 WARN  ACCOUNT_LOCKED user=dprince@pennstatesoft.com duration=15_minutes

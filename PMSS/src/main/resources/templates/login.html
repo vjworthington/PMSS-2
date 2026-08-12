@@ -40,6 +40,14 @@
         </button>
     </form>
 
+    <p th:if="${param.error}" style="color:red;">
+        Invalid email or password
+    </p>
+
+    <p th:if="${param.locked}" style="color:red;">
+        Email locked for 15 minutes
+    </p>
+
     <p style="margin-top:20px;">
         Don't have an account?
         <a th:href="@{/register}">Create one</a>

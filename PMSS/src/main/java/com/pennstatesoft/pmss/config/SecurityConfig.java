@@ -20,10 +20,14 @@ public class SecurityConfig {
 
     private final UserService userService;
     private final SecurityLogger securityLogger;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
-    public SecurityConfig(UserService userService, SecurityLogger securityLogger) {
+    public SecurityConfig(UserService userService, SecurityLogger securityLogger, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler) {
         this.userService = userService;
         this.securityLogger = securityLogger;
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.loginFailureHandler = loginFailureHandler;
     }
 
     @Bean
@@ -57,8 +61,8 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .successHandler(new LoginSuccessHandler(securityLogger))
-                        .failureHandler(new LoginFailureHandler(securityLogger))
+                        .successHandler(loginSuccessHandler)
+                        .failureHandler(loginFailureHandler)
                 )
 
                 .logout(logout -> logout

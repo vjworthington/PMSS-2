@@ -1,5 +1,7 @@
 package com.pennstatesoft.pmss.model;
 
+import java.time.LocalDateTime;
+
 public abstract class User {
 
     protected int userID;
@@ -11,8 +13,11 @@ public abstract class User {
     protected String displayName;
     protected String birthDate;
     protected byte[] profileImage;
+    protected int failedAttempts;
+    protected LocalDateTime lastFailed;
+    protected LocalDateTime lockedTimeTo;
 
-    public User(int userID, String userEmail, String passwordHash, String firstName, String lastName, String role, String displayName, String birthDate, byte[] profileImage) {
+    public User(int userID, String userEmail, String passwordHash, String firstName, String lastName, String role, String displayName, String birthDate, byte[] profileImage, int failedAttempts, LocalDateTime lastFailed, LocalDateTime lockedTimeTo) {
 
         this.userID = userID;
         this.userEmail = userEmail;
@@ -23,6 +28,9 @@ public abstract class User {
         this.birthDate = birthDate;
         this.displayName = displayName;
         this.profileImage = profileImage;
+        this.failedAttempts = failedAttempts;
+        this.lastFailed = lastFailed;
+        this.lockedTimeTo = lockedTimeTo;
     }
 
     public int getUserID() {
@@ -71,5 +79,29 @@ public abstract class User {
 
     public String getBirthDate() {
         return birthDate;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public LocalDateTime getLastFailedLogin() {
+        return lastFailed;
+    }
+
+    public LocalDateTime getLockedTimeTo() {
+        return lockedTimeTo;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public void setLastFailedLogin(LocalDateTime lastFailed) {
+        this.lastFailed = lastFailed;
+    }
+
+    public void setLockedTimeTo(LocalDateTime lockedTimeTo) {
+        this.lockedTimeTo = lockedTimeTo;
     }
 }

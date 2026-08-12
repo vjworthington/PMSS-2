@@ -83,4 +83,9 @@ public class SecurityLogger {
     public void complaintResolved(String adminEmail, int complaintID) {
         logger.info("COMPLAINT_RESPONDED admin={} complaintID={}", adminEmail, complaintID);
     }
+
+    // Locked Account
+    public void accountLocked(String email) {
+        logger.warn("ACCOUNT_LOCKED user={} duration=15_minutes",email);
+    }
 }

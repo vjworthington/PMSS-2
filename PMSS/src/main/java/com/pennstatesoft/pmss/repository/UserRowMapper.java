@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 @Component
 public class UserRowMapper implements RowMapper<User> {
@@ -16,9 +17,19 @@ public class UserRowMapper implements RowMapper<User> {
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         String role = rs.getString("role");
+        int failedAttempts = rs.getInt("failedAttempts");
+        String lastFailedString = rs.getString("lastFailedLogin");
+        LocalDateTime lastFailed = lastFailedString == null
+                ? null
+                : LocalDateTime.parse(lastFailedString);
+        String lockedTimeToString = rs.getString("lockedTimeTo");
+        LocalDateTime lockedTimeTo = lockedTimeToString == null
+                ? null
+                : LocalDateTime.parse(lockedTimeToString);
+        User user;
 
         if ("CLIENT".equals(role)) {
-            return new Client(
+            user = new Client(
                     rs.getInt("userID"),
                     rs.getString("userEmail"),
                     rs.getString("passwordHash"),
@@ -27,12 +38,15 @@ public class UserRowMapper implements RowMapper<User> {
                     role,
                     rs.getString("displayName"),
                     rs.getString("birthDate"),
-                    rs.getBytes("profileImage")
+                    rs.getBytes("profileImage"),
+                    rs.getInt("failedAttempts"),
+                    lastFailed,
+                    lockedTimeTo
             );
         }
 
         else if ("ADMINISTRATOR".equals(role)) {
-            return new Administrator(
+            user = new Administrator(
                     rs.getInt("userID"),
                     rs.getString("userEmail"),
                     rs.getString("passwordHash"),
@@ -41,10 +55,19 @@ public class UserRowMapper implements RowMapper<User> {
                     role,
                     rs.getString("displayName"),
                     rs.getString("birthDate"),
-                    rs.getBytes("profileImage")
+                    rs.getBytes("profileImage"),
+                    rs.getInt("failedAttempts"),
+                    lastFailed,
+                    lockedTimeTo
             );
+        } else {
+            throw new IllegalArgumentException("Unknown role: " + role);
         }
 
-        throw new IllegalArgumentException("Unknown role: " + role);
+        user.setFailedAttempts(failedAttempts);
+        user.setLastFailedLogin(lastFailed);
+        user.setLockedTimeTo(lockedTimeTo);
+
+        return user;
     }
 }

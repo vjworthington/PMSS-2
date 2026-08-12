@@ -1,5 +1,7 @@
 package com.pennstatesoft.pmss.model;
 
+import java.time.LocalDateTime;
+
 public class Administrator extends User {
 
     public Administrator(int userID,
@@ -10,9 +12,15 @@ public class Administrator extends User {
                          String role,
                          String birthDate,
                          String displayName,
-                         byte[] profileImage) {
+                         byte[] profileImage,
+                         int failedAttempts,
+                         LocalDateTime lastFailed,
+                         LocalDateTime lockedTimeTo) {
 
-        super(userID, userEmail, passwordHash, firstName, lastName, role, birthDate, displayName, profileImage);
+            super(userID, userEmail, passwordHash, firstName, lastName, role, birthDate, displayName, profileImage, failedAttempts, lastFailed, lockedTimeTo);
+        this.failedAttempts = failedAttempts;
+        this.lastFailed = lastFailed;
+        this.lockedTimeTo = lockedTimeTo;
     }
 
     public void manageComplaint() {
