@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/meetings")
@@ -57,6 +58,7 @@ public class MeetingController {
                                 @RequestParam(name = "startTime", required = false) String startTime,
                                 @RequestParam(name = "endTime", required = false) String endTime,
                                 @RequestParam(name = "roomNumber", required = false) Integer roomNumber,
+                                @RequestParam(name = "confirmed", required = false, defaultValue = "false") boolean confirmed,
                                 Model model,
                                 Authentication authentication,
                                 RedirectAttributes redirectAttributes) {
@@ -83,6 +85,23 @@ public class MeetingController {
             return "create-meeting";
         }
 
+        // Show a simple "pay the fee to reserve?" confirmation.
+        Map<String, Object> room = findRoom(roomNumber);
+        double fee = (room == null || room.get("fee") == null)
+                ? 0.0 : ((Number) room.get("fee")).doubleValue();
+        boolean special = room != null && "SPECIAL".equals(room.get("roomType"));
+
+        if (special && fee > 0 && !confirmed) {
+            model.addAttribute("user", user);
+            model.addAttribute("meetingName", meetingName);
+            model.addAttribute("meetingDate", meetingDate);
+            model.addAttribute("startTime", startTime);
+            model.addAttribute("endTime", endTime);
+            model.addAttribute("roomNumber", roomNumber);
+            model.addAttribute("fee", fee);
+            return "confirm-payment";
+        }
+
         Meeting meeting = new Meeting(0, meetingName.trim(),
                 java.sql.Date.valueOf(meetingDate), roomNumber);
         meeting.setCreatorID(user.getUserID());
@@ -92,8 +111,11 @@ public class MeetingController {
 
         meetingService.createMeeting(meeting);
 
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Meeting \"" + meeting.getMeetingName() + "\" created.");
+        String successMessage = (special && fee > 0)
+                ? "Meeting \"" + meeting.getMeetingName() + "\" reserved — $"
+                        + String.format("%.2f", fee) + " paid for Room " + roomNumber + "."
+                : "Meeting \"" + meeting.getMeetingName() + "\" created.";
+        redirectAttributes.addFlashAttribute("successMessage", successMessage);
         return "redirect:/meetings";
     }
 
@@ -141,5 +163,11 @@ public class MeetingController {
                         + "AND startTime < ? AND endTime > ?",
                 Integer.class, roomNumber, date, endFull, startFull);
         return conflicts == null || conflicts == 0;
+    }
+
+    private Map<String, Object> findRoom(int roomNumber) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+                "SELECT roomNumber, roomType, fee FROM Rooms WHERE roomNumber = ?", roomNumber);
+        return rows.isEmpty() ? null : rows.get(0);
     }
 }
