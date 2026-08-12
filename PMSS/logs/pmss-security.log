@@ -10,3 +10,5 @@
 2026-08-12 13:43:58 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
 2026-08-12 13:51:40 WARN  LOGIN_FAILURE user=dprince@pennstatesoft.com
 2026-08-12 13:51:40 WARN  ACCOUNT_LOCKED user=dprince@pennstatesoft.com duration=15_minutes
+2026-08-12 15:01:56 INFO  LOGIN_SUCCESS user=dprince@pennstatesoft.com
+2026-08-12 15:01:58 INFO  LOGOUT user=dprince@pennstatesoft.com
