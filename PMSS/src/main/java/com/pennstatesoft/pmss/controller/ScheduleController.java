@@ -58,7 +58,7 @@ public class ScheduleController implements AdminScheduleControllerIF {
         model.addAttribute("user", user);
 
         if (user.getRole().equals("ADMINISTRATOR")) {
-            return renderAdminDashboard(model, filter, day, weekStart, roomNumber, personID, timeSlot);
+            return renderAdminDashboard(model, user, filter, day, weekStart, roomNumber, personID, timeSlot);
         }
 
         return renderClientDashboard(model, user, view);
@@ -81,6 +81,7 @@ public class ScheduleController implements AdminScheduleControllerIF {
 
     // Admin Dashboard
     private String renderAdminDashboard(Model model,
+                                        User user,
                                         String filter,
                                         String day,
                                         String weekStart,
@@ -129,6 +130,12 @@ public class ScheduleController implements AdminScheduleControllerIF {
                     Time end = plusOneHour(start);
                     displayed = getMeetingsByTimeSlot(start, end);
                 }
+                break;
+            case "created":
+                displayed = getCreatedMeetings(user);
+                break;
+            case "participating":
+                displayed = getParticipatingMeetings(user);
                 break;
             default:
                 displayed = findAllMeetings();

@@ -8,10 +8,20 @@
 <div th:replace="~{fragments/banner :: banner}"></div>
 <div style="max-width:1100px; width: 90%; margin:auto;">
 
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+
     <!-- CLIENT: ScheduleDashboard -->
     <div th:if="${user.role != 'ADMINISTRATOR'}">
         <h1>My Meeting Schedule</h1>
         <hr>
+
+        <a th:href="@{/meetings/create}">
+            <button type="button" style="width:180px;height:40px;">Create Meeting</button>
+        </a>
+        <br><br>
+
+        <div th:replace="~{fragments/help :: help('These are the meetings you created or are attending. Use the Show menu to filter, Create Meeting to add one, or Edit / Delete on a meeting you created.')}"></div>
 
         <form th:action="@{/schedule}" method="get">
             <label>
@@ -40,6 +50,7 @@
                     <th>End</th>
                     <th>Room</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
                 <tr th:each="meeting : ${meetings}">
                     <td th:text="${meeting.meetingID}"></td>
@@ -49,6 +60,16 @@
                     <td th:text="${meeting.endTime}"></td>
                     <td th:text="${meeting.roomNumber}"></td>
                     <td th:text="${meeting.status}"></td>
+                    <td>
+                        <span th:if="${meeting.creatorID == user.userID}">
+                            <a th:href="@{/meetings/{id}/edit(id=${meeting.meetingID})}">Edit</a>
+                            <form th:action="@{/meetings/{id}/delete(id=${meeting.meetingID})}" method="post"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Delete this meeting?');">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </span>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -59,6 +80,8 @@
         <h1>Meeting Schedule (All Meetings)</h1>
         <hr>
 
+        <div th:replace="~{fragments/help :: help('Pick a Filter, then fill in the matching field below and click Apply Filter. Choose My Meetings to see the ones you created or are attending.')}"></div>
+
         <h3>Filter Meetings</h3>
         <form th:action="@{/schedule}" method="get">
             <p>
@@ -66,6 +89,8 @@
                     Filter by
                     <select name="filter" style="width:220px;">
                         <option value="all" th:selected="${filter == 'all'}">Show All</option>
+                        <option value="created" th:selected="${filter == 'created'}">My Meetings (Created)</option>
+                        <option value="participating" th:selected="${filter == 'participating'}">My Meetings (Attending)</option>
                         <option value="day" th:selected="${filter == 'day'}">Day</option>
                         <option value="week" th:selected="${filter == 'week'}">Week</option>
                         <option value="room" th:selected="${filter == 'room'}">Room</option>
@@ -146,6 +171,7 @@
                     <th>End</th>
                     <th>Room</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
                 <tr th:each="meeting : ${meetings}">
                     <td th:text="${meeting.meetingID}"></td>
@@ -155,6 +181,16 @@
                     <td th:text="${meeting.endTime}"></td>
                     <td th:text="${meeting.roomNumber}"></td>
                     <td th:text="${meeting.status}"></td>
+                    <td>
+                        <span th:if="${meeting.creatorID == user.userID}">
+                            <a th:href="@{/meetings/{id}/edit(id=${meeting.meetingID})}">Edit</a>
+                            <form th:action="@{/meetings/{id}/delete(id=${meeting.meetingID})}" method="post"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Delete this meeting?');">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </span>
+                    </td>
                 </tr>
             </table>
         </div>

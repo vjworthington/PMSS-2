@@ -17,12 +17,12 @@ public class Room {
     public int getRoomNumber() {
         return roomNumber;
     }
-    public void setRoomNumber(int number) { roomNumber = roomNumber; }
+    public void setRoomNumber(int number) { this.roomNumber = number; }
     public boolean isOccupied() {
-        return true;
+        return isOccupied;
     }
     public void setOccupied(boolean occupied) { isOccupied = occupied; }
-    public List<Meeting> getMeeting() {
+    public List<Meeting> getMeetings() {
         return meetings;
     }
     public void addMeeting(Meeting meeting) { meetings.add(meeting); }

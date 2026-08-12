@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client Billing</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:900px; width:90%; margin:auto;">
+    <h1>Client Billing</h1>
+    <hr>
+
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+
+    <table border="1" cellpadding="8" cellspacing="0" width="100%">
+        <tr>
+            <th>Client</th>
+            <th>Email</th>
+            <th>Card on File</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="client : ${clients}">
+            <td th:text="${client.firstName + ' ' + client.lastName}"></td>
+            <td th:text="${client.userEmail}"></td>
+            <td>
+                <span th:if="${client.cardLast4 != null}"
+                      th:text="${client.cardType + ' ****' + client.cardLast4 + '  (exp ' + client.cardExpiry + ')'}"></span>
+                <span th:if="${client.cardLast4 == null}" style="color:#6b7280;">None on file</span>
+            </td>
+            <td>
+                <a th:href="@{/admin/billing/{id}/edit(id=${client.userID})}">Edit</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

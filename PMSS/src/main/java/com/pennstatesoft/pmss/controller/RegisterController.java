@@ -1,5 +1,6 @@
 package com.pennstatesoft.pmss.controller;
 
+import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.UserService;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,12 +34,16 @@ public class RegisterController implements RegisterAdminControllerIF {
     private String pendingPassword;
     private Date pendingBirthDate;
 
+    private final SecurityLogger securityLogger;
+
     public RegisterController(JdbcTemplate jdbcTemplate,
                              PasswordEncoder passwordEncoder,
-                             UserService userService) {
+                             UserService userService,
+                             SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.securityLogger = securityLogger;
     }
 
     @GetMapping("/register")
@@ -69,6 +74,7 @@ public class RegisterController implements RegisterAdminControllerIF {
             return "redirect:/register";
         }
 
+        securityLogger.clientAccountCreated(email.trim());
         redirectAttributes.addFlashAttribute("successMessage",
             "Account created. You can now log in.");
         return "redirect:/login";
@@ -86,6 +92,7 @@ public class RegisterController implements RegisterAdminControllerIF {
                                   @RequestParam(name = "email") String email,
                                   @RequestParam(name = "password") String password,
                                   @RequestParam(name = "birthDate") String birthDate,
+                                  Authentication authentication,
                                   RedirectAttributes redirectAttributes) {
 
         String error = validateForm(firstName, lastName, email, password, birthDate);
@@ -101,6 +108,7 @@ public class RegisterController implements RegisterAdminControllerIF {
 
         if (checkEmailUnique(this.pendingEmail)) {
             createAdmin();
+            securityLogger.adminAccountCreated(authentication.getName(), this.pendingEmail);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Administrator account created for " + this.pendingEmail + ".");
             return "redirect:/admin/register";

@@ -20,7 +20,7 @@
 
     <!-- BUTTONS -->
     <div>
-        <a href="/landing">
+        <a th:href="${user != null and user.role == 'ADMINISTRATOR'} ? @{/admin/landing} : @{/client/landing}">
             <button type="button">Home</button>
         </a>
         <a href="/schedule">

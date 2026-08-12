@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Rooms</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:700px; width:90%; margin:auto;">
+    <h1>Manage Rooms</h1>
+    <hr>
+
+    <div th:replace="~{fragments/help :: help('Regular rooms are free; special rooms require a fee (default $100) to reserve. A room that still has meetings cannot be deleted.')}"></div>
+
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+
+    <table border="1" cellpadding="8" cellspacing="0" width="100%"
+           th:if="${!#lists.isEmpty(rooms)}">
+        <tr>
+            <th>Room #</th>
+            <th>Type</th>
+            <th>Fee</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.roomNumber}"></td>
+            <td th:text="${room.roomType}"></td>
+            <td th:text="'$' + ${#numbers.formatDecimal(room.fee, 1, 2)}"></td>
+            <td>
+                <form th:action="@{/admin/rooms/{n}/delete(n=${room.roomNumber})}" method="post"
+                      style="display:inline;"
+                      onsubmit="return confirm('Delete this room?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(rooms)}">No rooms yet.</p>
+
+    <hr>
+    <h3>Add a Room</h3>
+    <form th:action="@{/admin/rooms/add}" method="post">
+        <p>
+            <label>Room Number
+                <input type="number" name="roomNumber" min="1" style="width:120px;padding:6px;">
+            </label>
+        </p>
+        <p>
+            <label>Type
+                <select name="roomType" id="roomType" onchange="toggleFee()" style="width:160px;padding:6px;">
+                    <option value="REGULAR">Regular</option>
+                    <option value="SPECIAL">Special</option>
+                </select>
+            </label>
+        </p>
+        <p id="feeField" style="display:none;">
+            <label>Fee
+                <input type="number" name="fee" min="0" step="0.01" value="100.00"
+                       style="width:120px;padding:6px;">
+            </label>
+        </p>
+        <button type="submit" style="width:140px;height:36px;">Add Room</button>
+    </form>
+</div>
+
+<script>
+    function toggleFee() {
+        var type = document.getElementById('roomType').value;
+        document.getElementById('feeField').style.display = (type === 'SPECIAL') ? '' : 'none';
+    }
+    toggleFee();
+</script>
+</body>
+</html>

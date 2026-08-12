@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+  Reusable help / hint box. Usage:
+  <div th:replace="~{fragments/help :: help('Your hint text here.')}"></div>
+-->
+<div th:fragment="help(message)"
+     style="background:#eff6ff;
+            border-left:4px solid #3b82f6;
+            padding:10px 14px;
+            margin:12px 0;
+            color:#1e3a5f;
+            font-size:0.9em;
+            border-radius:4px;">
+    <strong>&#9432; Help:</strong>
+    <span th:text="${message}"></span>
+</div>
+
+</body>
+</html>

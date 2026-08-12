@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reserve Special Room</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:500px; width:90%; margin:auto;">
+    <h1>Special Room Payment</h1>
+    <hr>
+
+    <p>
+        <strong>Room <span th:text="${roomNumber}"></span></strong> is a special room and
+        requires a <strong>$<span th:text="${#numbers.formatDecimal(fee, 1, 2)}"></span></strong>
+        reservation fee.
+    </p>
+
+    <p>
+        Pay <strong>$<span th:text="${#numbers.formatDecimal(fee, 1, 2)}"></span></strong>
+        to reserve it for &ldquo;<span th:text="${meetingName}"></span>&rdquo; on
+        <span th:text="${meetingDate}"></span>,
+        <span th:text="${startTime}"></span>&ndash;<span th:text="${endTime}"></span>?
+    </p>
+
+    <form th:action="@{/meetings/create}" method="post">
+        <input type="hidden" name="meetingName" th:value="${meetingName}">
+        <input type="hidden" name="meetingDate" th:value="${meetingDate}">
+        <input type="hidden" name="startTime" th:value="${startTime}">
+        <input type="hidden" name="endTime" th:value="${endTime}">
+        <input type="hidden" name="roomNumber" th:value="${roomNumber}">
+        <input type="hidden" name="confirmed" value="true">
+        <button type="submit" style="width:220px;height:40px;">
+            Pay $<span th:text="${#numbers.formatDecimal(fee, 1, 2)}"></span> &amp; Reserve
+        </button>
+    </form>
+
+    <p style="margin-top:16px;">
+        <a th:href="@{/meetings/create}">Cancel</a>
+    </p>
+</div>
+</body>
+</html>

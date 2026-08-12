@@ -36,9 +36,9 @@ public class MeetingRepository
         return jdbcTemplate.update(
                 sql,
                 meeting.getMeetingName(),
-                meeting.getMeetingDate(),
-                meeting.getStartTime(),
-                meeting.getEndTime(),
+                meeting.getMeetingDate().toString(),
+                meeting.getStartTime().toString(),
+                meeting.getEndTime().toString(),
                 meeting.getCreatorID(),
                 meeting.getRoomNumber(),
                 meeting.getStatus()
@@ -106,9 +106,9 @@ public class MeetingRepository
         return jdbcTemplate.update(
                 sql,
                 meeting.getMeetingName(),
-                meeting.getMeetingDate(),
-                meeting.getStartTime(),
-                meeting.getEndTime(),
+                meeting.getMeetingDate().toString(),
+                meeting.getStartTime().toString(),
+                meeting.getEndTime().toString(),
                 meeting.getRoomNumber(),
                 meeting.getStatus(),
                 meeting.getMeetingID()

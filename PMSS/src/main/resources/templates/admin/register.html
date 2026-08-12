@@ -10,6 +10,8 @@
     <h1>Register Administrator</h1>
     <hr>
 
+    <div th:replace="~{fragments/help :: help('Create a new administrator account using a company email address. Administrators can manage rooms, client billing, complaints, and meetings.')}"></div>
+
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
     <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
 
