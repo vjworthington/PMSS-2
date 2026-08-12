@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Meeting</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:500px; width:90%; margin:auto;">
+    <h1>Create Meeting</h1>
+    <hr>
+
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+
+    <form th:action="@{/meetings/create}" method="post">
+        <p>
+            <label>Meeting Name<br>
+                <input type="text" name="meetingName" th:value="${meetingName}"
+                       style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Date<br>
+                <input type="date" name="meetingDate" th:value="${meetingDate}"
+                       style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Start Time<br>
+                <select name="startTime" style="width:130px;padding:8px;">
+                    <option value="">--</option>
+                    <option th:each="slot : ${timeSlots}"
+                            th:value="${slot}"
+                            th:text="${slot}"
+                            th:selected="${startTime == slot}"></option>
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>End Time<br>
+                <select name="endTime" style="width:130px;padding:8px;">
+                    <option value="">--</option>
+                    <option th:each="slot : ${timeSlots}"
+                            th:value="${slot}"
+                            th:text="${slot}"
+                            th:selected="${endTime == slot}"></option>
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>Room<br>
+                <select name="roomNumber" style="width:250px;padding:8px;">
+                    <option value="">-- Select room --</option>
+                    <option th:each="room : ${rooms}"
+                            th:value="${room.roomNumber}"
+                            th:selected="${roomNumber != null and roomNumber == room.roomNumber}"
+                            th:text="${'Room ' + room.roomNumber + ' (' + room.roomType + ')'}"></option>
+                </select>
+            </label>
+        </p>
+
+        <br>
+        <button type="submit" style="width:160px;height:40px;">Create Meeting</button>
+        <a th:href="@{/meetings}">
+            <button type="button" style="width:100px;height:40px;">Cancel</button>
+        </a>
+    </form>
+</div>
+</body>
+</html>
