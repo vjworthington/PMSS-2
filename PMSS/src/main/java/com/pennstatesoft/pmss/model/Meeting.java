@@ -1,6 +1,7 @@
 package com.pennstatesoft.pmss.model;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Meeting
     private int roomNumber;
     private List<Client> attendees;
     private String status;
+    private int roomId;
 
     public Meeting(
             int meetingID,
@@ -29,6 +31,7 @@ public class Meeting
         this.roomNumber = roomNumber;
 
         this.attendees = new ArrayList<>();
+        this.roomId = roomId;
     }
 
     public int getMeetingID()
@@ -133,6 +136,10 @@ public class Meeting
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public int getRoomId() {
+        return roomId;
     }
 
 }

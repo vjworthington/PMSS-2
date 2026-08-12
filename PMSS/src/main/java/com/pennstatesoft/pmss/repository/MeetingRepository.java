@@ -4,6 +4,8 @@ import com.pennstatesoft.pmss.model.Meeting;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -126,5 +128,26 @@ public class MeetingRepository
                 sql,
                 meetingID
         );
+    }
+
+    public boolean isRoomAvailable(int roomId, Time startTime, Time endTime) {
+
+        String sql = """
+        SELECT COUNT(*)
+        FROM Meetings
+        WHERE roomId = ?
+          AND startTime < ?
+          AND endTime > ?
+        """;
+
+        Integer count = jdbcTemplate.queryForObject(
+                sql,
+                Integer.class,
+                roomId,
+                endTime,
+                startTime
+        );
+
+        return count!= null && count == 0;
     }
 }

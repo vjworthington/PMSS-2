@@ -4,6 +4,7 @@ import com.pennstatesoft.pmss.model.Meeting;
 import com.pennstatesoft.pmss.repository.MeetingRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,4 +57,17 @@ public class MeetingService
     {
         return meetingRepository.deleteMeeting(meetingID) > 0;
     }
+
+    @Transactional
+    public void scheduleMeeting(Meeting meeting) {
+
+        if (!meetingRepository.isRoomAvailable(
+                meeting.getRoomId(),
+                meeting.getStartTime(),
+                meeting.getEndTime())) {
+
+            throw new IllegalStateException("Room is already booked.");
+        }
+
+        meetingRepository.createMeeting(meeting);    }
 }
