@@ -85,6 +85,8 @@
                     Filter by
                     <select name="filter" style="width:220px;">
                         <option value="all" th:selected="${filter == 'all'}">Show All</option>
+                        <option value="created" th:selected="${filter == 'created'}">My Meetings (Created)</option>
+                        <option value="participating" th:selected="${filter == 'participating'}">My Meetings (Attending)</option>
                         <option value="day" th:selected="${filter == 'day'}">Day</option>
                         <option value="week" th:selected="${filter == 'week'}">Week</option>
                         <option value="room" th:selected="${filter == 'room'}">Room</option>

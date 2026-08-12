@@ -26,3 +26,5 @@
 2026-08-11 20:33:11 INFO  LOGIN_SUCCESS user=client@test.com
 2026-08-11 20:55:05 INFO  LOGOUT user=client@test.com
 2026-08-11 20:55:12 INFO  LOGIN_SUCCESS user=admin@test.com
+2026-08-11 21:24:19 INFO  LOGOUT user=admin@test.com
+2026-08-11 21:24:25 INFO  LOGIN_SUCCESS user=admin@test.com

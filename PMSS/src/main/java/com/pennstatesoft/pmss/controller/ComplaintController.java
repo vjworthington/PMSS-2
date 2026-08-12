@@ -41,11 +41,8 @@ public class ComplaintController {
     public String displayComplaintForm(Model model, Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
 
-        if ("ADMINISTRATOR".equals(user.getRole())) {
-            return "redirect:/complaints/list";
-        }
-
         model.addAttribute("user", user);
+        model.addAttribute("fileMode", true);
         model.addAttribute("meetings", findUserMeetings(user.getUserID()));
         model.addAttribute("complaintOptions", COMPLAINT_OPTIONS);
         model.addAttribute("complaints", findComplaintsByUser(user.getUserID()));
@@ -97,6 +94,7 @@ public class ComplaintController {
         }
 
         model.addAttribute("user", user);
+        model.addAttribute("fileMode", false);
         model.addAttribute("complaints", findAllComplaints());
 
         return "complaints";
