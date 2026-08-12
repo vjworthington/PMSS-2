@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reports</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:900px; width:90%; margin:auto;">
+    <h1>Reports</h1>
+    <hr>
+
+    <div th:replace="~{fragments/help :: help('Summary reports generated from the database. Use the download buttons to export each report as a CSV file you can open in a spreadsheet.')}"></div>
+
+    <h3>Overview</h3>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr><td>Total meetings</td><td th:text="${totalMeetings}"></td></tr>
+        <tr><td>Rooms (special)</td>
+            <td><span th:text="${totalRooms}"></span> (<span th:text="${specialRooms}"></span>)</td></tr>
+        <tr><td>Clients</td><td th:text="${totalClients}"></td></tr>
+        <tr><td>Administrators</td><td th:text="${totalAdmins}"></td></tr>
+        <tr><td>Complaints</td><td th:text="${totalComplaints}"></td></tr>
+    </table>
+
+    <h3>Meetings per Room</h3>
+    <table border="1" cellpadding="8" cellspacing="0" th:if="${!#lists.isEmpty(meetingsByRoom)}">
+        <tr><th>Room</th><th>Meetings</th></tr>
+        <tr th:each="row : ${meetingsByRoom}">
+            <td th:text="${row.roomNumber}"></td>
+            <td th:text="${row.count}"></td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(meetingsByRoom)}">No meetings yet.</p>
+
+    <h3>Meetings per Creator</h3>
+    <table border="1" cellpadding="8" cellspacing="0" th:if="${!#lists.isEmpty(meetingsByCreator)}">
+        <tr><th>Creator</th><th>Meetings</th></tr>
+        <tr th:each="row : ${meetingsByCreator}">
+            <td th:text="${row.creator}"></td>
+            <td th:text="${row.count}"></td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(meetingsByCreator)}">No meetings yet.</p>
+
+    <h3>Complaints by Status</h3>
+    <table border="1" cellpadding="8" cellspacing="0" th:if="${!#lists.isEmpty(complaintsByStatus)}">
+        <tr><th>Status</th><th>Count</th></tr>
+        <tr th:each="row : ${complaintsByStatus}">
+            <td th:text="${row.status}"></td>
+            <td th:text="${row.count}"></td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(complaintsByStatus)}">No complaints yet.</p>
+
+    <hr>
+    <h3>Download Reports (CSV)</h3>
+    <a th:href="@{/admin/reports/meetings.csv}"><button type="button" style="width:200px;height:36px;">Meetings CSV</button></a>
+    <a th:href="@{/admin/reports/complaints.csv}"><button type="button" style="width:200px;height:36px;">Complaints CSV</button></a>
+    <a th:href="@{/admin/reports/rooms.csv}"><button type="button" style="width:200px;height:36px;">Rooms CSV</button></a>
+    <a th:href="@{/admin/reports/users.csv}"><button type="button" style="width:200px;height:36px;">Users CSV</button></a>
+</div>
+</body>
+</html>
