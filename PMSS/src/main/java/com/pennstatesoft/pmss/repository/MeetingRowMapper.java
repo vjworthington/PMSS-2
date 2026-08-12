@@ -24,6 +24,7 @@ public class MeetingRowMapper implements RowMapper<Meeting> {
         meeting.setMeetingName(rs.getString("meetingName"));
         meeting.setStartTime(parseTime(rs.getString("startTime")));
         meeting.setEndTime(parseTime(rs.getString("endTime")));
+        meeting.setCreatorID(rs.getInt("userID"));
         meeting.setStatus(rs.getString("status"));
 
         return meeting;
