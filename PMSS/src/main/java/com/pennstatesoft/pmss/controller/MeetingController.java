@@ -72,6 +72,11 @@ public class MeetingController {
             error = "Room " + roomNumber + " is already booked during that time slot.";
         }
 
+        // The creator cannot be double-booked in the same slot.
+        if (error == null && !clientIsAvailable(user.getUserID(), meetingDate, startTime + ":00", endTime + ":00", 0)) {
+            error = "You already have a meeting during that time slot.";
+        }
+
         if (error != null) {
             model.addAttribute("user", user);
             model.addAttribute("errorMessage", error);
@@ -159,6 +164,11 @@ public class MeetingController {
         String error = validateMeeting(meetingName, meetingDate, startTime, endTime, roomNumber);
         if (error == null && !roomIsAvailable(roomNumber, meetingDate, startTime + ":00", endTime + ":00", id)) {
             error = "Room " + roomNumber + " is already booked during that time slot.";
+        }
+
+        // CheckClientAvailability: the creator cannot be double-booked in the same slot.
+        if (error == null && !clientIsAvailable(user.getUserID(), meetingDate, startTime + ":00", endTime + ":00", id)) {
+            error = "You already have a meeting during that time slot.";
         }
 
         if (error != null) {

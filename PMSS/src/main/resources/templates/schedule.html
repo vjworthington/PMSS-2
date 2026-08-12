@@ -21,6 +21,8 @@
         </a>
         <br><br>
 
+        <div th:replace="~{fragments/help :: help('These are the meetings you created or are attending. Use the Show menu to filter, Create Meeting to add one, or Edit / Delete on a meeting you created.')}"></div>
+
         <form th:action="@{/schedule}" method="get">
             <label>
                 Show
@@ -77,6 +79,8 @@
     <div th:if="${user.role == 'ADMINISTRATOR'}">
         <h1>Meeting Schedule (All Meetings)</h1>
         <hr>
+
+        <div th:replace="~{fragments/help :: help('Pick a Filter, then fill in the matching field below and click Apply Filter. Choose My Meetings to see the ones you created or are attending.')}"></div>
 
         <h3>Filter Meetings</h3>
         <form th:action="@{/schedule}" method="get">

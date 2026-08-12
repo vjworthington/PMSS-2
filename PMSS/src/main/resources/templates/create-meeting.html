@@ -10,6 +10,8 @@
     <h1>Create Meeting</h1>
     <hr>
 
+    <div th:replace="~{fragments/help :: help('Meetings must fall within business hours (9 AM to 5 PM). Each room holds one meeting per time slot, and a person cannot be in two meetings at once. Reserving a special room costs $100.')}"></div>
+
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
 
     <form th:action="@{/meetings/create}" method="post">

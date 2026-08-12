@@ -13,6 +13,9 @@
     <div th:if="${fileMode}">
         <h1>File a Complaint</h1>
         <hr>
+
+        <div th:replace="~{fragments/help :: help('Optionally link your complaint to a meeting you attended, choose a category, and describe the issue. An administrator will review it and respond.')}"></div>
+
         <form th:action="@{/complaints}" method="post">
             <p>
                 <label>
@@ -112,6 +115,8 @@
     <div th:unless="${fileMode}">
         <h1>Complaint Management</h1>
         <hr>
+
+        <div th:replace="~{fragments/help :: help('These are all submitted complaints. Click View / Respond to read a complaint and reply to the client who filed it.')}"></div>
 
         <div th:if="${#lists.isEmpty(complaints)}">
             <p>No complaints have been filed.</p>

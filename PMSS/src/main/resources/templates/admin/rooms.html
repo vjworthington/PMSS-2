@@ -10,6 +10,8 @@
     <h1>Manage Rooms</h1>
     <hr>
 
+    <div th:replace="~{fragments/help :: help('Regular rooms are free; special rooms require a fee (default $100) to reserve. A room that still has meetings cannot be deleted.')}"></div>
+
     <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
 

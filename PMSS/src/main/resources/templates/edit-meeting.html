@@ -10,6 +10,8 @@
     <h1>Edit Meeting</h1>
     <hr>
 
+    <div th:replace="~{fragments/help :: help('Only the meeting creator can edit it. Update the details above, or add and remove participants below. Business-hour and room-conflict rules still apply.')}"></div>
+
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
     <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
 

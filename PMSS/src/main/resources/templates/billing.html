@@ -10,6 +10,8 @@
     <h1>Payment Information</h1>
     <hr>
 
+    <div th:replace="~{fragments/help :: help('Save a card on file for special-room payments. For your security, only the last 4 digits are stored.')}"></div>
+
     <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
 

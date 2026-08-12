@@ -10,6 +10,8 @@
 
     <h2>Create Your Account</h2>
 
+    <div th:replace="~{fragments/help :: help('Register with your company email address to create a client account.')}"></div>
+
     <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
     <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
 
