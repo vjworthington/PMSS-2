@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Information</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/banner :: banner}"></div>
+<div style="max-width:500px; width:90%; margin:auto;">
+    <h1>Payment Information</h1>
+    <hr>
+
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color:#15803d;"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:#b91c1c;"></p>
+
+    <p th:if="${card != null}">
+        Card on file:
+        <strong><span th:text="${card.cardType}"></span> ending in
+            <span th:text="${card.cardLast4}"></span></strong>,
+        exp <span th:text="${card.cardExpiry}"></span>
+        (<span th:text="${card.cardholderName}"></span>)
+    </p>
+    <p th:if="${card == null}">No card on file.</p>
+
+    <hr>
+    <h3>Update Card on File</h3>
+    <form th:action="@{/billing}" method="post">
+        <p>
+            <label>Cardholder Name<br>
+                <input type="text" name="cardholderName" style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Card Type<br>
+                <select name="cardType" style="width:160px;padding:8px;">
+                    <option value="Visa">Visa</option>
+                    <option value="Mastercard">Mastercard</option>
+                    <option value="Amex">Amex</option>
+                    <option value="Discover">Discover</option>
+                </select>
+            </label>
+        </p>
+        <p>
+            <label>Card Number<br>
+                <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456"
+                       style="width:250px;padding:8px;">
+            </label>
+        </p>
+        <p>
+            <label>Expiration (MM/YY)<br>
+                <input type="text" name="cardExpiry" placeholder="MM/YY" style="width:120px;padding:8px;">
+            </label>
+        </p>
+        <button type="submit" style="width:180px;height:40px;">Save Card</button>
+    </form>
+    <p style="color:#6b7280;font-size:0.9em;">
+        For your security, only the last 4 digits of your card are stored.
+    </p>
+</div>
+</body>
+</html>
