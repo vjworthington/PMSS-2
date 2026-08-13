@@ -114,15 +114,6 @@ public class UserRepository {
     }
 
     public void unlockAccount(String email) {
-
-        String sql = """
-            UPDATE Users
-            SET failedAttempts = 0,
-                lastFailedLogin = NULL,
-                lockedTimeTo = NULL
-            WHERE userEmail = ?
-            """;
-
-        jdbcTemplate.update(sql, email);
+        resetLoginFailures(email);
     }
 }

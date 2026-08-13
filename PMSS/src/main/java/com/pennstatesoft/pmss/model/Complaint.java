@@ -1,6 +1,7 @@
 package com.pennstatesoft.pmss.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Complaint {
     private int complaintID;
@@ -10,7 +11,7 @@ public class Complaint {
     private String summary;
     private String status;
     private String adminResponse;
-    private Date dateFiled;
+    private LocalDate dateFiled;
 
     public Complaint(int userID,
                      int meetingID,
@@ -22,7 +23,7 @@ public class Complaint {
         this.complaintOption = complaintOption;
         this.summary = summary;
         this.status = "PENDING";
-        this.dateFiled = new Date();
+        this.dateFiled = LocalDate.now(ZoneId.systemDefault());
     }
 
     public void updateStatus(String newStatus) {
@@ -82,11 +83,11 @@ public class Complaint {
         return adminResponse;
     }
 
-    public Date getDateFiled() {
+    public LocalDate getDateFiled() {
         return dateFiled;
     }
 
-    public void setDateFiled(Date dateFiled){
+    public void setDateFiled(LocalDate dateFiled){
         this.dateFiled = dateFiled;
     }
 }

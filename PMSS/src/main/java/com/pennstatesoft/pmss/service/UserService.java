@@ -11,8 +11,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import com.pennstatesoft.pmss.security.SecurityLogger;
-import org.springframework.security.authentication.LockedException;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,7 +41,7 @@ public class UserService implements UserDetailsService {
 
         if (user.getLockedTimeTo() != null) {
 
-            if (LocalDateTime.now().isBefore(user.getLockedTimeTo())) {
+            if (LocalDateTime.now(ZoneId.systemDefault()).isBefore(user.getLockedTimeTo())) {
 
                 throw new LockedException("Account is temporarily locked");
 
@@ -127,7 +128,7 @@ public class UserService implements UserDetailsService {
             return;
         }
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
 
         int failedAttempts = user.getFailedAttempts();
 

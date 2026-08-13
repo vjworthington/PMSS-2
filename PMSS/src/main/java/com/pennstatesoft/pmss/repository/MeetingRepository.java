@@ -4,8 +4,7 @@ import com.pennstatesoft.pmss.model.Meeting;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -130,7 +129,7 @@ public class MeetingRepository
         );
     }
 
-    public boolean isRoomAvailable(int roomId, Time startTime, Time endTime) {
+    public boolean isRoomAvailable(int roomId, LocalTime startTime, LocalTime endTime) {
 
         String sql = """
         SELECT COUNT(*)

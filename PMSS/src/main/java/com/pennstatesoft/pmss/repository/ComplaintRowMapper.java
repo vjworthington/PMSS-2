@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 @Component
 public class ComplaintRowMapper implements RowMapper<Complaint> {
@@ -24,9 +23,9 @@ public class ComplaintRowMapper implements RowMapper<Complaint> {
         complaint.setComplaintID(rs.getInt("complaintID"));
         complaint.updateStatus(rs.getString("status"));
 
-        Timestamp dateFiled = rs.getTimestamp("dateFiled");
+        java.sql.Date dateFiled = rs.getDate("dateFiled");
         if (dateFiled != null) {
-            complaint.setDateFiled(dateFiled);
+            complaint.setDateFiled(dateFiled.toLocalDate());
         }
 
         String adminResponse = rs.getString("adminResponse");

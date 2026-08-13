@@ -4,9 +4,10 @@ import com.pennstatesoft.pmss.model.Meeting;
 import com.pennstatesoft.pmss.model.Room;
 import com.pennstatesoft.pmss.model.User;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+
 
 /**
  * Controller interface referenced by AdminScheduleDashboard
@@ -15,13 +16,13 @@ import java.util.List;
  */
 public interface AdminScheduleControllerIF extends ScheduleControllerIF {
 
-    List<Meeting> getMeetingsByDay(Date date);
+    List<Meeting> getMeetingsByDay(LocalDate date);
 
-    List<Meeting> getMeetingsByWeek(Date weekStart);
+    List<Meeting> getMeetingsByWeek(LocalDate weekStart);
 
     List<Meeting> getMeetingsByRoom(Room room);
 
     List<Meeting> getMeetingsByPerson(User user);
 
-    List<Meeting> getMeetingsByTimeSlot(Time startTime, Time endTime);
+    List<Meeting> getMeetingsByTimeSlot(LocalTime startTime, LocalTime endTime);
 }

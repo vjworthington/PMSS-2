@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class SecurityConfig {
     private final SecurityLogger securityLogger;
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
+    private static final String LOGIN_URL = "/login";
 
     public SecurityConfig(UserService userService, SecurityLogger securityLogger, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler) {
         this.userService = userService;
@@ -35,7 +37,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/login",
+                                LOGIN_URL,
                                 "/register",
                                 "/error",
                                 "/images/**",
@@ -57,8 +59,8 @@ public class SecurityConfig {
                 )
 
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
+                        .loginPage(LOGIN_URL)
+                        .loginProcessingUrl(LOGIN_URL)
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler(loginSuccessHandler)
@@ -73,7 +75,7 @@ public class SecurityConfig {
                                         securityLogger.logout(authentication.getName());
                                     }
 
-                                    response.sendRedirect("/login");
+                                    response.sendRedirect(LOGIN_URL);
                                 }
                         )
                         .invalidateHttpSession(true)
@@ -87,9 +89,7 @@ public class SecurityConfig {
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .sessionFixation(sessionFixation -> sessionFixation
-                                .changeSessionId()
-                        )
+                        .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::changeSessionId)
                 )
                 .authenticationProvider(authenticationProvider());
 

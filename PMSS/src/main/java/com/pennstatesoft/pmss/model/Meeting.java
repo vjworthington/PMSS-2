@@ -1,28 +1,27 @@
 package com.pennstatesoft.pmss.model;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Meeting
 {
     private int meetingID;
-    private String meetingName;
-    private Date meetingDate;
-    private Time startTime;
-    private Time endTime;
+    private LocalDate meetingDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private int creatorID;
     private int roomNumber;
     private List<Client> attendees;
     private String status;
     private int roomId;
+    private String meetingName;
 
     public Meeting(
             int meetingID,
             String meetingName,
-            Date meetingDate,
+            LocalDate meetingDate,
             int roomNumber)
     {
         this.meetingID = meetingID;
@@ -31,7 +30,6 @@ public class Meeting
         this.roomNumber = roomNumber;
 
         this.attendees = new ArrayList<>();
-        this.roomId = roomId;
     }
 
     public int getMeetingID()
@@ -49,32 +47,32 @@ public class Meeting
         this.meetingName = meetingName;
     }
 
-    public Date getMeetingDate()
+    public LocalDate getMeetingDate()
     {
         return meetingDate;
     }
 
-    public void setMeetingDate(Date meetingDate)
+    public void setMeetingDate(LocalDate meetingDate)
     {
         this.meetingDate = meetingDate;
     }
 
-    public Time getStartTime()
+    public LocalTime getStartTime()
     {
         return startTime;
     }
 
-    public void setStartTime(Time startTime)
+    public void setStartTime(LocalTime startTime)
     {
         this.startTime = startTime;
     }
 
-    public Time getEndTime()
+    public LocalTime getEndTime()
     {
         return endTime;
     }
 
-    public void setEndTime(Time endTime)
+    public void setEndTime(LocalTime endTime)
     {
         this.endTime = endTime;
     }

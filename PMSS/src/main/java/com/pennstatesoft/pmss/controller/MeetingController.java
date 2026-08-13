@@ -5,7 +5,6 @@ import com.pennstatesoft.pmss.model.User;
 import com.pennstatesoft.pmss.security.SecurityLogger;
 import com.pennstatesoft.pmss.service.MeetingService;
 import com.pennstatesoft.pmss.service.UserService;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,19 +15,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/meetings")
-public class MeetingController {
+public class  MeetingController {
 
     private final MeetingService meetingService;
     private final UserService userService;
     private final JdbcTemplate jdbcTemplate;
     private final SecurityLogger securityLogger;
+    private static final String MEETING_URL = "redirect:/meetings/";
+    private static final String SUCCESS_MESSAGE = "successMessage";
+    private static final String MEETING_NAME = "meetingName";
+    private static final String MEETING_PATH = "Meeting \"";
+    private static final String ROOM_NUMBER = "roomNumber";
+    private static final String MEETING_DATE = "meetingDate";
+    private static final String START_TIME = "startTime";
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String SCHEDULE_URL = "redirect:/schedule";
+    private static final String END_TIME = "endTime";
+    private static final String EDIT_URL = "/edit";
+
 
     public MeetingController(MeetingService meetingService,
                              UserService userService,
@@ -43,7 +54,7 @@ public class MeetingController {
     // The meetings list is consolidated into the Schedule page; /meetings redirects there.
     @GetMapping
     public String displayMeetings() {
-        return "redirect:/schedule";
+        return SCHEDULE_URL;
     }
 
     // MeetingEditDashboard (create mode): OpenCreateMeetingForm.
@@ -83,12 +94,12 @@ public class MeetingController {
 
         if (error != null) {
             model.addAttribute("user", user);
-            model.addAttribute("errorMessage", error);
-            model.addAttribute("meetingName", meetingName);
-            model.addAttribute("meetingDate", meetingDate);
-            model.addAttribute("startTime", startTime);
-            model.addAttribute("endTime", endTime);
-            model.addAttribute("roomNumber", roomNumber);
+            model.addAttribute(ERROR_MESSAGE, error);
+            model.addAttribute(MEETING_NAME, meetingName);
+            model.addAttribute(MEETING_DATE, meetingDate);
+            model.addAttribute(START_TIME, startTime);
+            model.addAttribute(END_TIME, endTime);
+            model.addAttribute(ROOM_NUMBER, roomNumber);
             addFormOptions(model);
             return "create-meeting";
         }
@@ -101,31 +112,35 @@ public class MeetingController {
 
         if (special && fee > 0 && !confirmed) {
             model.addAttribute("user", user);
-            model.addAttribute("meetingName", meetingName);
-            model.addAttribute("meetingDate", meetingDate);
-            model.addAttribute("startTime", startTime);
-            model.addAttribute("endTime", endTime);
-            model.addAttribute("roomNumber", roomNumber);
+            model.addAttribute(MEETING_NAME, meetingName);
+            model.addAttribute(MEETING_DATE, meetingDate);
+            model.addAttribute(START_TIME, startTime);
+            model.addAttribute(END_TIME, endTime);
+            model.addAttribute(ROOM_NUMBER, roomNumber);
             model.addAttribute("fee", fee);
             return "confirm-payment";
         }
 
-        Meeting meeting = new Meeting(0, meetingName.trim(),
-                java.sql.Date.valueOf(meetingDate), roomNumber);
+        Meeting meeting = new Meeting(
+                0,
+                meetingName.trim(),
+                LocalDate.parse(meetingDate),
+                roomNumber
+        );
         meeting.setCreatorID(user.getUserID());
-        meeting.setStartTime(Time.valueOf(startTime + ":00"));
-        meeting.setEndTime(Time.valueOf(endTime + ":00"));
+        meeting.setStartTime(LocalTime.parse(startTime));
+        meeting.setEndTime(LocalTime.parse(endTime));
         meeting.setStatus("SCHEDULED");
 
         meetingService.createMeeting(meeting);
         securityLogger.meetingCreated(authentication.getName(), meeting.getMeetingName());
 
         String successMessage = (special && fee > 0)
-                ? "Meeting \"" + meeting.getMeetingName() + "\" reserved — $"
+                ? MEETING_PATH + meeting.getMeetingName() + "\" reserved — $"
                         + String.format("%.2f", fee) + " paid for Room " + roomNumber + "."
-                : "Meeting \"" + meeting.getMeetingName() + "\" created.";
-        redirectAttributes.addFlashAttribute("successMessage", successMessage);
-        return "redirect:/schedule";
+                : MEETING_PATH + meeting.getMeetingName() + "\" created.";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, successMessage);
+        return SCHEDULE_URL;
     }
 
     // MeetingEditDashboard (edit mode): OpenEditMeetingForm.
@@ -178,13 +193,13 @@ public class MeetingController {
 
         if (error != null) {
             model.addAttribute("user", user);
-            model.addAttribute("errorMessage", error);
+            model.addAttribute(ERROR_MESSAGE, error);
             model.addAttribute("meetingId", id);
-            model.addAttribute("meetingName", meetingName);
-            model.addAttribute("meetingDate", meetingDate);
-            model.addAttribute("startTime", startTime);
-            model.addAttribute("endTime", endTime);
-            model.addAttribute("roomNumber", roomNumber);
+            model.addAttribute(MEETING_NAME, meetingName);
+            model.addAttribute(MEETING_DATE, meetingDate);
+            model.addAttribute(START_TIME, startTime);
+            model.addAttribute(END_TIME, endTime);
+            model.addAttribute(ROOM_NUMBER, roomNumber);
             addFormOptions(model);
             model.addAttribute("attendees", findAttendees(id));
             model.addAttribute("addableClients", findAddableClients(id, meeting.getCreatorID()));
@@ -192,9 +207,8 @@ public class MeetingController {
         }
 
         meeting.setMeetingName(meetingName.trim());
-        meeting.setMeetingDate(java.sql.Date.valueOf(meetingDate));
-        meeting.setStartTime(Time.valueOf(startTime + ":00"));
-        meeting.setEndTime(Time.valueOf(endTime + ":00"));
+        meeting.setMeetingDate(LocalDate.parse(meetingDate));        meeting.setStartTime(LocalTime.parse(startTime + ":00"));
+        meeting.setEndTime(LocalTime.parse(endTime + ":00"));
         meeting.setRoomNumber(roomNumber);
         if (meeting.getStatus() == null) {
             meeting.setStatus("SCHEDULED");
@@ -202,9 +216,9 @@ public class MeetingController {
 
         meetingService.updateMeeting(meeting);
 
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Meeting \"" + meeting.getMeetingName() + "\" updated.");
-        return "redirect:/schedule";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE,
+                MEETING_PATH + meeting.getMeetingName() + "\" updated.");
+        return SCHEDULE_URL;
     }
 
     // MeetingController DeleteMeeting: creator-only remove + release room.
@@ -224,9 +238,9 @@ public class MeetingController {
         meetingService.deleteMeeting(id);
         securityLogger.meetingDeleted(authentication.getName(), id);
 
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Meeting \"" + meeting.getMeetingName() + "\" deleted.");
-        return "redirect:/schedule";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE,
+                MEETING_PATH + meeting.getMeetingName() + "\" deleted.");
+        return SCHEDULE_URL;
     }
 
     // MeetingEditDashboard AddParticipant: creator only, checks the client is free.
@@ -244,8 +258,8 @@ public class MeetingController {
         }
 
         if (participantID == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Please choose a person to add.");
-            return "redirect:/meetings/" + id + "/edit";
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Please choose a person to add.");
+            return MEETING_URL + id + EDIT_URL;
         }
 
         String date = meeting.getMeetingDate().toString();
@@ -253,17 +267,17 @@ public class MeetingController {
         String end = meeting.getEndTime().toString();
 
         if (!clientIsAvailable(participantID, date, start, end, id)) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "That person already has a meeting during this time slot.");
-            return "redirect:/meetings/" + id + "/edit";
+            return MEETING_URL + id + EDIT_URL;
         }
 
         jdbcTemplate.update(
                 "INSERT OR IGNORE INTO MeetingAttendees (meetingID, userID) VALUES (?, ?)",
                 id, participantID);
         securityLogger.attendeeAdded(authentication.getName(), id, participantID);
-        redirectAttributes.addFlashAttribute("successMessage", "Participant added.");
-        return "redirect:/meetings/" + id + "/edit";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Participant added.");
+        return MEETING_URL + id + EDIT_URL;
     }
 
     // MeetingEditDashboard RemoveParticipant: creator only.
@@ -284,8 +298,8 @@ public class MeetingController {
                 "DELETE FROM MeetingAttendees WHERE meetingID = ? AND userID = ?",
                 id, participantID);
         securityLogger.attendeeRemoved(authentication.getName(), id, participantID);
-        redirectAttributes.addFlashAttribute("successMessage", "Participant removed.");
-        return "redirect:/meetings/" + id + "/edit";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Participant removed.");
+        return MEETING_URL + id + EDIT_URL;
     }
 
     // --- helpers -------------------------------------------------------------
@@ -345,24 +359,24 @@ public class MeetingController {
     // creator
     private String requireCreator(Meeting meeting, User user, RedirectAttributes redirectAttributes) {
         if (meeting == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Meeting not found.");
-            return "redirect:/schedule";
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Meeting not found.");
+            return SCHEDULE_URL;
         }
         if (meeting.getCreatorID() != user.getUserID()) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Only the meeting's creator can manage it.");
-            return "redirect:/schedule";
+            return SCHEDULE_URL;
         }
         return null;
     }
 
     private void populateEditModel(Model model, Meeting meeting) {
         model.addAttribute("meetingId", meeting.getMeetingID());
-        model.addAttribute("meetingName", meeting.getMeetingName());
-        model.addAttribute("meetingDate", meeting.getMeetingDate().toString());
-        model.addAttribute("startTime", meeting.getStartTime().toString().substring(0, 5));
-        model.addAttribute("endTime", meeting.getEndTime().toString().substring(0, 5));
-        model.addAttribute("roomNumber", meeting.getRoomNumber());
+        model.addAttribute(MEETING_NAME, meeting.getMeetingName());
+        model.addAttribute(MEETING_DATE, meeting.getMeetingDate().toString());
+        model.addAttribute(START_TIME, meeting.getStartTime().toString().substring(0, 5));
+        model.addAttribute(END_TIME, meeting.getEndTime().toString().substring(0, 5));
+        model.addAttribute(ROOM_NUMBER, meeting.getRoomNumber());
         addFormOptions(model);
         model.addAttribute("attendees", findAttendees(meeting.getMeetingID()));
         model.addAttribute("addableClients",

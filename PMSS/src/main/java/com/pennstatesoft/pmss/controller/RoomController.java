@@ -27,6 +27,11 @@ public class RoomController {
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
     private final SecurityLogger securityLogger;
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String ADMIN_ROOMS_URL = "redirect:/admin/rooms";
+    private static final String SPECIAL_STRING = "SPECIAL";
+    private static final String ROOM_STRING = "Room ";
+
 
     public RoomController(JdbcTemplate jdbcTemplate, UserService userService, SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
@@ -49,22 +54,24 @@ public class RoomController {
                           RedirectAttributes redirectAttributes) {
 
         if (roomNumber == null || roomNumber <= 0) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Enter a valid room number.");
-            return "redirect:/admin/rooms";
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Enter a valid room number.");
         }
 
         Integer exists = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM Rooms WHERE roomNumber = ?", Integer.class, roomNumber);
         if (exists != null && exists > 0) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Room " + roomNumber + " already exists.");
-            return "redirect:/admin/rooms";
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
+                    ROOM_STRING + roomNumber + " already exists.");
         }
 
-        String type = "SPECIAL".equalsIgnoreCase(roomType) ? "SPECIAL" : "REGULAR";
-        double roomFee = "SPECIAL".equals(type)
-                ? (fee == null ? 100.00 : fee)
-                : 0.0;
+        String type = SPECIAL_STRING.equalsIgnoreCase(roomType) ? SPECIAL_STRING: "REGULAR";
+        double roomFee;
+
+        if (SPECIAL_STRING.equals(type)) {
+            roomFee = fee == null ? 100.00 : fee;
+        } else {
+            roomFee = 0.0;
+        }
 
         jdbcTemplate.update(
                 "INSERT INTO Rooms (roomNumber, isOccupied, fee, roomType) VALUES (?, 0, ?, ?)",
@@ -72,8 +79,8 @@ public class RoomController {
 
         securityLogger.roomCreated(authentication.getName(), roomNumber);
         redirectAttributes.addFlashAttribute("successMessage",
-                "Room " + roomNumber + " (" + type + ") added.");
-        return "redirect:/admin/rooms";
+                ROOM_STRING + roomNumber + " (" + type + ") added.");
+        return ADMIN_ROOMS_URL;
     }
 
     @PostMapping("/{roomNumber}/delete")
@@ -85,16 +92,15 @@ public class RoomController {
         Integer meetings = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM Meetings WHERE roomNumber = ?", Integer.class, roomNumber);
         if (meetings != null && meetings > 0) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Room " + roomNumber + " has " + meetings
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
+                    ROOM_STRING + roomNumber + " has " + meetings
                             + " meeting(s) and can't be deleted. Remove those meetings first.");
-            return "redirect:/admin/rooms";
         }
 
         jdbcTemplate.update("DELETE FROM Rooms WHERE roomNumber = ?", roomNumber);
         securityLogger.roomDeleted(authentication.getName(), roomNumber);
-        redirectAttributes.addFlashAttribute("successMessage", "Room " + roomNumber + " deleted.");
-        return "redirect:/admin/rooms";
+        redirectAttributes.addFlashAttribute("successMessage", ROOM_STRING + roomNumber + " deleted.");
+        return ADMIN_ROOMS_URL;
     }
 
     private List<Map<String, Object>> findAllRooms() {

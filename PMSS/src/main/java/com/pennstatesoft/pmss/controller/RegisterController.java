@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 /**
@@ -32,6 +32,11 @@ public class RegisterController implements RegisterAdminControllerIF {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final SecurityLogger securityLogger;
+    private static final String BIRTHDAY_PROMPT = "Please enter a valid birth date.";
+    private static final String ADMIN_REGISTER_URL = "redirect:/admin/register";
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String REGISTER_URL = "redirect:/register";
+
 
     // Validation patterns
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\p{L} .'-]+$");
@@ -79,19 +84,19 @@ public class RegisterController implements RegisterAdminControllerIF {
             );
 
             if (error != null) {
-                redirectAttributes.addFlashAttribute("errorMessage", error);
+                redirectAttributes.addFlashAttribute(ERROR_MESSAGE, error);
 
-                return "redirect:/register";
+                return REGISTER_URL;
             }
 
-            Date parsedBirthDate = parseDate(birthDate);
+            LocalDate parsedBirthDate = parseDate(birthDate);
 
             // Check duplicate email
             if (!checkEmailUnique(email)) {
 
-                redirectAttributes.addFlashAttribute("errorMessage", "An account with that email already exists.");
+                redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "An account with that email already exists.");
 
-                return "redirect:/register";
+                return REGISTER_URL;
             }
 
             // Create client
@@ -112,21 +117,21 @@ public class RegisterController implements RegisterAdminControllerIF {
 
         } catch (DateTimeParseException e) {
 
-            redirectAttributes.addFlashAttribute("errorMessage", "Please enter a valid birth date.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, BIRTHDAY_PROMPT);
 
-            return "redirect:/register";
+            return REGISTER_URL;
 
         } catch (DataAccessException e) {
 
-            redirectAttributes.addFlashAttribute("errorMessage", "Unable to create the account. Please try again.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Unable to create the account. Please try again.");
 
-            return "redirect:/register";
+            return REGISTER_URL;
 
         } catch (Exception e) {
 
-            redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "An unexpected error occurred. Please try again.");
 
-            return "redirect:/register";
+            return REGISTER_URL;
         }
     }
 
@@ -159,16 +164,14 @@ public class RegisterController implements RegisterAdminControllerIF {
             );
 
             if (error != null) {
-                redirectAttributes.addFlashAttribute("errorMessage", error);
-                return "redirect:/admin/register";
+                redirectAttributes.addFlashAttribute(ERROR_MESSAGE, error);
             }
 
-            Date parsedBirthDate = parseDate(birthDate);
+            LocalDate parsedBirthDate = parseDate(birthDate);
 
             if (checkEmailUnique(email)) {
-                redirectAttributes.addFlashAttribute("errorMessage",
+                redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                         "An account with that email already exists.");
-                return "redirect:/admin/register";
             }
 
             insertUser(firstName, lastName, email, password, parsedBirthDate, "ADMINISTRATOR");
@@ -177,27 +180,24 @@ public class RegisterController implements RegisterAdminControllerIF {
 
             redirectAttributes.addFlashAttribute("successMessage", "Administrator account created for " + email + ".");
 
-            return "redirect:/admin/register";
 
         } catch (DateTimeParseException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Please enter a valid birth date.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, BIRTHDAY_PROMPT);
 
-            return "redirect:/admin/register";
 
         }catch (DataAccessException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Unable to create the account. Please try again.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Unable to create the account. Please try again.");
 
-            return "redirect:/admin/register";
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "An unexpected error occurred. Please try again.");
 
-            return "redirect:/admin/register";
         }
+        return ADMIN_REGISTER_URL;
     }
 
     @Override
-    public boolean registerAccount(String email, String password, Date birthDate) {
+    public boolean registerAccount(String email, String password, LocalDate birthDate) {
 
         if (!checkEmailUnique(email)) {
             return false;
@@ -208,9 +208,7 @@ public class RegisterController implements RegisterAdminControllerIF {
                 "",
                 email,
                 password,
-                birthDate == null
-                        ? null
-                        : new Date(birthDate.getTime()),
+                birthDate,
                 "CLIENT"
         );
 
@@ -236,7 +234,7 @@ public class RegisterController implements RegisterAdminControllerIF {
 
     // Helper Methods
 
-    private void insertUser(String firstName, String lastName, String email, String password, Date birthDate, String role) {
+    private void insertUser(String firstName, String lastName, String email, String password, LocalDate birthDate, String role) {
         String sql = """
             INSERT INTO Users (userEmail, passwordHash, lastName, firstName, role, displayName, birthDate)
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -311,11 +309,11 @@ public class RegisterController implements RegisterAdminControllerIF {
         }
         try {
             LocalDate date = LocalDate.parse(birthDate);
-            if (date.isAfter(LocalDate.now())) {
+            if (date.isAfter(LocalDate.now(ZoneId.systemDefault()))) {
                 return "Birth date cannot be in the future.";
             }
         } catch (DateTimeParseException e) {
-            return "Please enter a valid birth date.";
+            return BIRTHDAY_PROMPT;
         }
 
         return null;
@@ -325,8 +323,8 @@ public class RegisterController implements RegisterAdminControllerIF {
         return value == null || value.isBlank();
     }
 
-    private Date parseDate(String value) {
-        return Date.from(java.time.LocalDate.parse(value.trim()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+    private LocalDate parseDate(String value) {
+        return LocalDate.parse(value.trim());
 
     }
 }

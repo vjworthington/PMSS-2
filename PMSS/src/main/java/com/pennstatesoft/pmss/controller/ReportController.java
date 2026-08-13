@@ -25,6 +25,7 @@ public class ReportController {
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
 
+
     public ReportController(JdbcTemplate jdbcTemplate, UserService userService) {
         this.jdbcTemplate = jdbcTemplate;
         this.userService = userService;

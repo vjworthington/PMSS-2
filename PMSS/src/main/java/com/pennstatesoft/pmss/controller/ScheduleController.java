@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,13 +95,13 @@ public class ScheduleController implements AdminScheduleControllerIF {
             case "day":
                 displayed = List.of();
                 if (day != null && !day.isBlank()) {
-                    displayed = getMeetingsByDay(Date.valueOf(day));
+                    displayed = getMeetingsByDay(LocalDate.parse(day));
                 }
                 break;
             case "week":
                 displayed = List.of();
                 if (weekStart != null && !weekStart.isBlank()) {
-                    displayed = getMeetingsByWeek(Date.valueOf(weekStart));
+                    displayed = getMeetingsByWeek(LocalDate.parse(weekStart));
                 }
                 break;
             case "room":
@@ -126,8 +125,8 @@ public class ScheduleController implements AdminScheduleControllerIF {
             case "timeslot":
                 displayed = List.of();
                 if (timeSlot != null && !timeSlot.isBlank()) {
-                    Time start = normalizeTime(timeSlot);
-                    Time end = plusOneHour(start);
+                    LocalTime start = normalizeTime(timeSlot);
+                    LocalTime end = plusOneHour(start);
                     displayed = getMeetingsByTimeSlot(start, end);
                 }
                 break;
@@ -192,7 +191,7 @@ public class ScheduleController implements AdminScheduleControllerIF {
     }
 
     @Override
-    public List<Meeting> getMeetingsByDay(Date date) {
+    public List<Meeting> getMeetingsByDay(LocalDate date) {
         String sql = """
             SELECT * FROM Meetings
             WHERE meetingDate = ?
@@ -203,8 +202,8 @@ public class ScheduleController implements AdminScheduleControllerIF {
     }
 
     @Override
-    public List<Meeting> getMeetingsByWeek(Date weekStart) {
-        LocalDate dateInWeek = weekStart.toLocalDate();
+    public List<Meeting> getMeetingsByWeek(LocalDate weekStart) {
+        LocalDate dateInWeek = weekStart.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate start = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end = start.plusDays(6); // Sunday of the same week
         String sql = """
@@ -229,18 +228,11 @@ public class ScheduleController implements AdminScheduleControllerIF {
 
     @Override
     public List<Meeting> getMeetingsByPerson(User user) {
-        String sql = """
-            SELECT DISTINCT m.* FROM Meetings m
-            LEFT JOIN MeetingAttendees a ON m.meetingID = a.meetingID
-            WHERE m.userID = ? OR a.userID = ?
-            ORDER BY m.meetingDate, m.startTime
-        """;
-        meetings = jdbcTemplate.query(sql, meetingRowMapper, user.getUserID(), user.getUserID());
-        return meetings;
+        return getUsersMeetings(user);
     }
 
     @Override
-    public List<Meeting> getMeetingsByTimeSlot(Time startTime, Time endTime) {
+    public List<Meeting> getMeetingsByTimeSlot(LocalTime startTime, LocalTime endTime) {
         String sql = """
             SELECT * FROM Meetings
             WHERE startTime < ? AND endTime > ?
@@ -288,15 +280,15 @@ public class ScheduleController implements AdminScheduleControllerIF {
         return slots;
     }
 
-    private Time normalizeTime(String value) {
+    private LocalTime normalizeTime(String value) {
         String trimmed = value.trim();
         if (trimmed.length() == 5) {
             trimmed = trimmed + ":00";
         }
-        return Time.valueOf(trimmed);
+        return LocalTime.parse(trimmed);
     }
 
-    private Time plusOneHour(Time time) {
-        return Time.valueOf(time.toLocalTime().plusHours(1));
+    private LocalTime plusOneHour(LocalTime time) {
+        return time.plusHours(1);
     }
 }

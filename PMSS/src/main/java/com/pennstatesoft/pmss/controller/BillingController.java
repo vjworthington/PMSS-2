@@ -26,6 +26,7 @@ public class BillingController {
     private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
     private final SecurityLogger securityLogger;
+    private static final String ERROR_MESSAGE = "errorMessage";
 
     public BillingController(JdbcTemplate jdbcTemplate, UserService userService, SecurityLogger securityLogger) {
         this.jdbcTemplate = jdbcTemplate;
@@ -53,7 +54,7 @@ public class BillingController {
 
         String error = validateCard(cardholderName, cardNumber, cardExpiry);
         if (error != null) {
-            redirectAttributes.addFlashAttribute("errorMessage", error);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, error);
             return "redirect:/billing";
         }
 
@@ -79,7 +80,7 @@ public class BillingController {
                                    RedirectAttributes redirectAttributes) {
         Map<String, Object> target = findClient(userID);
         if (target == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Client not found.");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Client not found.");
             return "redirect:/admin/billing";
         }
         model.addAttribute("user", userService.findByEmail(authentication.getName()));
@@ -98,7 +99,7 @@ public class BillingController {
                                      RedirectAttributes redirectAttributes) {
         String error = validateCard(cardholderName, cardNumber, cardExpiry);
         if (error != null) {
-            redirectAttributes.addFlashAttribute("errorMessage", error);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, error);
             return "redirect:/admin/billing/" + userID + "/edit";
         }
 

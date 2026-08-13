@@ -4,10 +4,10 @@ import com.pennstatesoft.pmss.model.Meeting;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+import java.time.LocalTime;
 
 @Component
 public class MeetingRowMapper implements RowMapper<Meeting> {
@@ -30,14 +30,14 @@ public class MeetingRowMapper implements RowMapper<Meeting> {
         return meeting;
     }
 
-    private Date parseDate(String value) {
+    private LocalDate parseDate(String value) {
         if (value == null || value.isBlank()) {
             return null;
         }
-        return Date.valueOf(value.trim());
+        return LocalDate.parse(value.trim());
     }
 
-    private Time parseTime(String value) {
+    private LocalTime parseTime(String value) {
         if (value == null || value.isBlank()) {
             return null;
         }
@@ -45,6 +45,6 @@ public class MeetingRowMapper implements RowMapper<Meeting> {
         if (trimmed.length() == 5) {
             trimmed = trimmed + ":00";
         }
-        return Time.valueOf(trimmed);
+        return LocalTime.parse(trimmed);
     }
 }

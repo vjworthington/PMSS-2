@@ -30,6 +30,13 @@ public class ComplaintController {
     private final UserService userService;
     private final ComplaintRowMapper complaintRowMapper;
     private final SecurityLogger securityLogger;
+    private static final String COMPLAINTS_LIST_URL = "redirect:/complaints/list";
+    private static final String COMPLAINTS_URL = "redirect:/complaints";
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String COMPLAINTS = "complaints";
+    private static final String SUCCESS_MESSAGE = "successMessage";
+    private static final String ADMIN_TAG = "ADMINISTRATOR";
+
 
     public ComplaintController(JdbcTemplate jdbcTemplate,
                                UserService userService,
@@ -49,9 +56,9 @@ public class ComplaintController {
         model.addAttribute("fileMode", true);
         model.addAttribute("meetings", findUserMeetings(user.getUserID()));
         model.addAttribute("complaintOptions", COMPLAINT_OPTIONS);
-        model.addAttribute("complaints", findComplaintsByUser(user.getUserID()));
+        model.addAttribute(COMPLAINTS, findComplaintsByUser(user.getUserID()));
 
-        return "complaints";
+        return COMPLAINTS;
     }
 
     @PostMapping
@@ -63,46 +70,43 @@ public class ComplaintController {
         User user = userService.findByEmail(authentication.getName());
 
         if (!validateMeetingSelection(meetingID, user.getUserID())) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please select a meeting you attended, or leave it blank.");
-            return "redirect:/complaints";
         }
 
         if (!validateComplaintOption(complaintOption)) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please select a valid complaint category.");
-            return "redirect:/complaints";
         }
 
         if (summary == null || summary.isBlank()) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please describe the issue before submitting.");
-            return "redirect:/complaints";
         }
 
         Complaint complaint = new Complaint(user.getUserID(), meetingID, complaintOption, summary);
         insertComplaint(complaint);
         securityLogger.complaintFiled(authentication.getName(), meetingID);
 
-        redirectAttributes.addFlashAttribute("successMessage",
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE,
                 "Your complaint has been submitted.");
 
-        return "redirect:/complaints";
+        return COMPLAINTS_URL;
     }
 
     @GetMapping("/list")
     public String retrieveComplaintList(Model model, Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
 
-        if (!"ADMINISTRATOR".equals(user.getRole())) {
-            return "redirect:/complaints";
+        if (!ADMIN_TAG.equals(user.getRole())) {
+            return COMPLAINTS_URL;
         }
 
         model.addAttribute("user", user);
         model.addAttribute("fileMode", false);
-        model.addAttribute("complaints", findAllComplaints());
+        model.addAttribute(COMPLAINTS, findAllComplaints());
 
-        return "complaints";
+        return COMPLAINTS;
     }
 
     @GetMapping("/{complaintID}")
@@ -111,14 +115,14 @@ public class ComplaintController {
                                            Authentication authentication) {
 
         User user = userService.findByEmail(authentication.getName());
-        if (!"ADMINISTRATOR".equals(user.getRole())) {
-            return "redirect:/complaints";
+        if (!ADMIN_TAG.equals(user.getRole())) {
+            return COMPLAINTS_URL;
         }
 
         Complaint complaint = findComplaintById(complaintID);
 
         if (complaint == null) {
-            return "redirect:/complaints/list";
+            return COMPLAINTS_LIST_URL;
         }
 
         model.addAttribute("user", user);
@@ -134,12 +138,12 @@ public class ComplaintController {
                                  RedirectAttributes redirectAttributes) {
         User user = userService.findByEmail(authentication.getName());
 
-        if (!"ADMINISTRATOR".equals(user.getRole())) {
-            return "redirect:/complaints";
+        if (!ADMIN_TAG.equals(user.getRole())) {
+            return COMPLAINTS_URL;
         }
 
         if (adminResponse == null || adminResponse.isBlank()) {
-            redirectAttributes.addFlashAttribute("errorMessage",
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "A response is required.");
             return "redirect:/complaints/" + complaintID;
         }
@@ -147,17 +151,17 @@ public class ComplaintController {
         Complaint complaint = findComplaintById(complaintID);
 
         if (complaint == null) {
-            return "redirect:/complaints/list";
+            return COMPLAINTS_LIST_URL;
         }
 
         complaint.setAdminResponse(adminResponse);
         updateComplaintResponse(complaint);
         securityLogger.complaintResolved(authentication.getName(), complaintID);
 
-        redirectAttributes.addFlashAttribute("successMessage",
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE,
                 "Response submitted. Complaint marked as resolved.");
 
-        return "redirect:/complaints/list";
+        return COMPLAINTS_LIST_URL;
     }
 
     @PostMapping("/{complaintID}/status")
@@ -167,18 +171,18 @@ public class ComplaintController {
                                         RedirectAttributes redirectAttributes) {
 
         User user = userService.findByEmail(authentication.getName());
-        if (!"ADMINISTRATOR".equals(user.getRole())) {
-            return "redirect:/complaints";
+        if (!ADMIN_TAG.equals(user.getRole())) {
+            return COMPLAINTS_URL;
         }
 
         Complaint complaint = findComplaintById(complaintID);
         if (complaint == null) {
-            return "redirect:/complaints/list";
+            return COMPLAINTS_LIST_URL;
         }
 
         complaint.updateStatus(newStatus);
         updateComplaintStatusInDb(complaint);
-        redirectAttributes.addFlashAttribute("successMessage", "Complaint status updated.");
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Complaint status updated.");
 
         return "redirect:/complaints/" + complaintID;
     }

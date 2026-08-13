@@ -12,12 +12,13 @@ import java.time.LocalDateTime;
 
 @Component
 public class UserRowMapper implements RowMapper<User> {
+    private static final String FAILED_ATTEMPTS = "failedAttempts";
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         String role = rs.getString("role");
-        int failedAttempts = rs.getInt("failedAttempts");
+        int failedAttempts = rs.getInt(FAILED_ATTEMPTS);
         String lastFailedString = rs.getString("lastFailedLogin");
         LocalDateTime lastFailed = lastFailedString == null
                 ? null
@@ -39,7 +40,7 @@ public class UserRowMapper implements RowMapper<User> {
                     rs.getString("displayName"),
                     rs.getString("birthDate"),
                     rs.getBytes("profileImage"),
-                    rs.getInt("failedAttempts"),
+                    rs.getInt(FAILED_ATTEMPTS),
                     lastFailed,
                     lockedTimeTo
             );
@@ -56,7 +57,7 @@ public class UserRowMapper implements RowMapper<User> {
                     rs.getString("displayName"),
                     rs.getString("birthDate"),
                     rs.getBytes("profileImage"),
-                    rs.getInt("failedAttempts"),
+                    rs.getInt(FAILED_ATTEMPTS),
                     lastFailed,
                     lockedTimeTo
             );

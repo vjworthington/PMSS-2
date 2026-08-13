@@ -17,7 +17,7 @@ public abstract class User {
     protected LocalDateTime lastFailed;
     protected LocalDateTime lockedTimeTo;
 
-    public User(int userID, String userEmail, String passwordHash, String firstName, String lastName, String role, String displayName, String birthDate, byte[] profileImage, int failedAttempts, LocalDateTime lastFailed, LocalDateTime lockedTimeTo) {
+    protected User(int userID, String userEmail, String passwordHash, String firstName, String lastName, String role, String displayName, String birthDate, byte[] profileImage, int failedAttempts, LocalDateTime lastFailed, LocalDateTime lockedTimeTo) {
 
         this.userID = userID;
         this.userEmail = userEmail;

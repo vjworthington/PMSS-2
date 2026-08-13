@@ -23,8 +23,4 @@ public class Client extends User {
         this.lockedTimeTo = lockedTimeTo;
     }
 
-    /** TODO: Remove upon completion:
-     * Administrators can do everything a client do, so all methods
-     * should live in the parent User abstract class.
-     */
 }
