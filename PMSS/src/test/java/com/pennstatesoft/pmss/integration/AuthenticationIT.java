@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * {@code UserService}/{@code DaoAuthenticationProvider}, the role-aware success
  * handler, the failed-login lockout policy, and URL authorization rules.
  */
-class AuthenticationIntegrationTest extends AbstractIntegrationTest {
+class AuthenticationIT extends AbstractIntegrationTest {
 
     // Form login uses the app's custom "email" username parameter.
     private org.springframework.test.web.servlet.RequestBuilder login(String email, String password) {

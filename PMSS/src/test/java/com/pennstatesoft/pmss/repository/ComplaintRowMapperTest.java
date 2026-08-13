@@ -3,7 +3,6 @@ package com.pennstatesoft.pmss.repository;
 import com.pennstatesoft.pmss.model.Complaint;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,8 +18,8 @@ class ComplaintRowMapperTest {
 
     @Test
     void mapsAllColumnsIncludingResponse() throws SQLException {
-        // The mapper reads dateFiled as a SQL DATE and stores it as a LocalDate.
-        Date filed = Date.valueOf("2026-03-01");
+        // The app stores dateFiled via SQLite datetime('now'): "yyyy-MM-dd HH:mm:ss".
+        String filed = "2026-03-01 12:00:00";
         ResultSet rs = mock(ResultSet.class);
         when(rs.getInt("userID")).thenReturn(4);
         when(rs.getInt("meetingID")).thenReturn(7);
@@ -28,7 +27,7 @@ class ComplaintRowMapperTest {
         when(rs.getString("summary")).thenReturn("Overcharged");
         when(rs.getInt("complaintID")).thenReturn(21);
         when(rs.getString("status")).thenReturn("RESOLVED");
-        when(rs.getDate("dateFiled")).thenReturn(filed);
+        when(rs.getString("dateFiled")).thenReturn(filed);
         when(rs.getString("adminResponse")).thenReturn("Refunded");
 
         Complaint complaint = mapper.mapRow(rs, 0);

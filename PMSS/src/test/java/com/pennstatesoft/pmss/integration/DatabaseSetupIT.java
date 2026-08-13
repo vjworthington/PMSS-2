@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Smoke test: proves the isolated in-memory schema is created and seeded, and
  * that seeded credentials are BCrypt-hashed by the real encoder.
  */
-class DatabaseSetupIntegrationTest extends AbstractIntegrationTest {
+class DatabaseSetupIT extends AbstractIntegrationTest {
 
     @Test
     void seedsUsersAndRooms() {

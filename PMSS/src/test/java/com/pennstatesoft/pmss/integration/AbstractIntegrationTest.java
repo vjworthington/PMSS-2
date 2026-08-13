@@ -106,4 +106,20 @@ public abstract class AbstractIntegrationTest {
     protected int countMeetings() {
         return jdbc.queryForObject("SELECT COUNT(*) FROM Meetings", Integer.class);
     }
+
+    protected void seedAttendee(int meetingId, int userId) {
+        jdbc.update("INSERT INTO MeetingAttendees (meetingID, userID) VALUES (?, ?)",
+                meetingId, userId);
+    }
+
+    protected int seedComplaint(int userId, Integer meetingId, String option,
+                                String summary, String status) {
+        // Store dateFiled the way the app does (SQLite datetime('now'): no millis),
+        // so the ComplaintRowMapper is exercised against a realistic value.
+        jdbc.update(
+                "INSERT INTO Complaints (meetingID, userID, complaintOption, summary, status, dateFiled) "
+                        + "VALUES (?, ?, ?, ?, ?, ?)",
+                meetingId, userId, option, summary, status, "2026-08-01 09:00:00");
+        return jdbc.queryForObject("SELECT MAX(complaintID) FROM Complaints", Integer.class);
+    }
 }

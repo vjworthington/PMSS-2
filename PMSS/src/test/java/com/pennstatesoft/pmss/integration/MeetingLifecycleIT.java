@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * double-booking rules), the special-room payment confirmation gate, listing on
  * the schedule, creator-only edit/delete, and the resulting database state.
  */
-class MeetingLifecycleIntegrationTest extends AbstractIntegrationTest {
+class MeetingLifecycleIT extends AbstractIntegrationTest {
 
     private static final String DATE = "2026-09-01";
 

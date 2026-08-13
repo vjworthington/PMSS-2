@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * End-to-end registration: the HTTP form POST flows through the controller,
  * validation, the password encoder, and the JDBC layer into the database.
  */
-class RegistrationIntegrationTest extends AbstractIntegrationTest {
+class RegistrationIT extends AbstractIntegrationTest {
 
     private static final String NEW_EMAIL = "newuser@pennstatesoft.com";
 
