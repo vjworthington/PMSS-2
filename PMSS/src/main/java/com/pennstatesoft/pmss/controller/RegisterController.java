@@ -165,13 +165,15 @@ public class RegisterController implements RegisterAdminControllerIF {
 
             if (error != null) {
                 redirectAttributes.addFlashAttribute(ERROR_MESSAGE, error);
+                return ADMIN_REGISTER_URL;
             }
 
             LocalDate parsedBirthDate = parseDate(birthDate);
 
-            if (checkEmailUnique(email)) {
+            if (!checkEmailUnique(email)) {
                 redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                         "An account with that email already exists.");
+                return ADMIN_REGISTER_URL;
             }
 
             insertUser(firstName, lastName, email, password, parsedBirthDate, "ADMINISTRATOR");

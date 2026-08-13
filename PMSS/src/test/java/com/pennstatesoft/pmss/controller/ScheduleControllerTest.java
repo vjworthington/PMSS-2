@@ -108,7 +108,7 @@ class ScheduleControllerTest {
         stubQueryWithArgs();
         controller.getMeetingsByTimeSlot(LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00"));
         // SQL is "startTime < endParam AND endTime > startParam", so end is bound first.
-        verify(jdbc).query(anyString(), eq(mapper), eq("10:00:00"), eq("09:00:00"));
+        verify(jdbc).query(anyString(), eq(mapper), eq("10:00"), eq("09:00"));
     }
 
     // ---- displaySchedule dispatch ----

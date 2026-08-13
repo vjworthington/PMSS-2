@@ -3,9 +3,10 @@ package com.pennstatesoft.pmss.repository;
 import com.pennstatesoft.pmss.model.Complaint;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,7 +19,8 @@ class ComplaintRowMapperTest {
 
     @Test
     void mapsAllColumnsIncludingResponse() throws SQLException {
-        Timestamp filed = Timestamp.valueOf("2026-03-01 12:00:00");
+        // The mapper reads dateFiled as a SQL DATE and stores it as a LocalDate.
+        Date filed = Date.valueOf("2026-03-01");
         ResultSet rs = mock(ResultSet.class);
         when(rs.getInt("userID")).thenReturn(4);
         when(rs.getInt("meetingID")).thenReturn(7);
@@ -26,7 +28,7 @@ class ComplaintRowMapperTest {
         when(rs.getString("summary")).thenReturn("Overcharged");
         when(rs.getInt("complaintID")).thenReturn(21);
         when(rs.getString("status")).thenReturn("RESOLVED");
-        when(rs.getTimestamp("dateFiled")).thenReturn(filed);
+        when(rs.getDate("dateFiled")).thenReturn(filed);
         when(rs.getString("adminResponse")).thenReturn("Refunded");
 
         Complaint complaint = mapper.mapRow(rs, 0);
@@ -37,7 +39,7 @@ class ComplaintRowMapperTest {
         assertEquals("Overcharged", complaint.getSummary());
         assertEquals(21, complaint.getComplaintID());
         assertEquals("RESOLVED", complaint.getStatus());
-        assertEquals(filed, complaint.getDateFiled());
+        assertEquals(LocalDate.of(2026, 3, 1), complaint.getDateFiled());
         assertEquals("Refunded", complaint.getAdminResponse());
     }
 

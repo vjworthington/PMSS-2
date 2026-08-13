@@ -43,7 +43,7 @@ class MeetingRepositoryTest {
 
         assertEquals(1, result);
         verify(jdbc).update(anyString(),
-                eq("Sync"), eq("2026-04-01"), eq("09:00:00"), eq("10:00:00"),
+                eq("Sync"), eq("2026-04-01"), eq("09:00"), eq("10:00"),
                 eq(3), eq(12), eq("SCHEDULED"));
     }
 

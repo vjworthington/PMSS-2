@@ -1,2 +1,157 @@
 2026-08-13 13:14:22 INFO  LOGIN_SUCCESS user=client@test.com
 2026-08-13 13:14:32 INFO  LOGOUT user=client@test.com
+2026-08-13 17:30:45 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:30:45 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:45 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:30:45 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:30:46 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:46 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:30:46 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:46 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:46 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:46 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:30:46 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:30:46 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:30:47 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:30:47 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:30:48 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:30:48 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:30:49 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:30:50 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:30:50 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:31:57 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:31:58 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:58 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:31:58 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:31:58 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:59 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:31:59 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:59 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:59 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:59 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:31:59 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:31:59 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:32:00 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:32:00 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:32:00 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:32:01 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:32:01 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:32:02 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:32:03 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:33:27 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:33:28 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:28 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:33:28 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:33:28 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:28 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:33:29 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:29 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:29 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:29 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:33:29 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:29 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:33:29 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:33:30 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:33:30 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:33:30 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:33:31 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:33:32 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:33:32 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:33:56 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:33:56 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:57 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:33:57 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:33:57 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:57 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:33:57 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:58 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:58 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:58 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:33:58 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:33:58 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:33:58 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:33:59 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:33:59 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:33:59 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:34:00 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:34:01 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:34:01 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:37:05 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:37:05 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:06 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:37:06 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:37:06 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:06 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:37:07 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:07 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:07 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:07 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:37:07 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:37:07 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:37:08 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:37:08 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:37:08 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:37:08 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:37:09 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:37:10 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:37:11 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:42:38 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:42:39 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:39 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:42:39 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:42:40 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:40 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:42:40 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:40 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:40 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:40 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:42:40 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:42:40 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:42:41 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:42:41 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:42:42 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:42:42 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:42:42 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:42:43 WARN  ADMIN_ACCOUNT_CREATED creator=admin@pennstatesoft.com newAdmin=newadmin@pennstatesoft.com
+2026-08-13 17:42:44 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:42:44 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 17:44:22 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 17:44:23 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 17:44:23 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 17:44:24 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 17:44:24 WARN  LOGIN_FAILURE user=null
+2026-08-13 17:44:24 WARN  ACCOUNT_LOCKED user=null duration=15_minutes
+2026-08-13 17:44:24 WARN  AUTHORIZATION_FAILURE user=null path=null
+2026-08-13 17:44:24 INFO  LOGIN_SUCCESS user=a@x.com
+2026-08-13 17:44:24 WARN  LOGIN_FAILURE user=a@x.com
+2026-08-13 17:44:24 INFO  LOGOUT user=a@x.com
+2026-08-13 17:44:24 WARN  AUTHORIZATION_FAILURE user=a@x.com path=/admin
+2026-08-13 17:44:24 WARN  ADMIN_ACCOUNT_CREATED creator=admin@x.com newAdmin=new@x.com
+2026-08-13 17:44:24 INFO  CLIENT_ACCOUNT_CREATED user=a@x.com
+2026-08-13 17:44:24 INFO  PROFILE_CHANGED user=a@x.com
+2026-08-13 17:44:24 INFO  ROOM_CREATED admin=admin@x.com room=5
+2026-08-13 17:44:24 WARN  ROOM_DELETED admin=admin@x.com room=5
+2026-08-13 17:44:24 INFO  MEETING_CREATED user=a@x.com meeting="Sync"
+2026-08-13 17:44:24 WARN  MEETING_DELETED user=a@x.com meetingID=3
+2026-08-13 17:44:24 INFO  ATTENDEE_ADDED user=a@x.com meetingID=3 participant=9
+2026-08-13 17:44:24 INFO  ATTENDEE_REMOVED user=a@x.com meetingID=3 participant=9
+2026-08-13 17:44:24 INFO  BILLING_UPDATED by=a@x.com client=9
+2026-08-13 17:44:24 INFO  COMPLAINT_FILED user=a@x.com meetingID=3
+2026-08-13 17:44:24 INFO  COMPLAINT_RESPONDED admin=admin@x.com complaintID=3
+2026-08-13 17:44:24 WARN  ACCOUNT_LOCKED user=a@x.com duration=15_minutes
+2026-08-13 17:44:26 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 17:44:26 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:26 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:44:26 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 17:44:26 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:27 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 17:44:27 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:27 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:27 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:27 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:44:27 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 17:44:27 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 17:44:27 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 17:44:28 WARN  ADMIN_ACCOUNT_CREATED creator=admin@pennstatesoft.com newAdmin=newadmin@pennstatesoft.com
+2026-08-13 17:44:29 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 17:44:29 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
