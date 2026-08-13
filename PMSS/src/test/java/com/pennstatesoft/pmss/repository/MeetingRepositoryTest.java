@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,9 +26,9 @@ class MeetingRepositoryTest {
     private final MeetingRepository repository = new MeetingRepository(jdbc);
 
     private Meeting fullMeeting() {
-        Meeting meeting = new Meeting(5, "Sync", Date.valueOf("2026-04-01"), 12);
-        meeting.setStartTime(Time.valueOf("09:00:00"));
-        meeting.setEndTime(Time.valueOf("10:00:00"));
+        Meeting meeting = new Meeting(5, "Sync", LocalDate.parse("2026-04-01"), 12);
+        meeting.setStartTime(LocalTime.parse("09:00:00"));
+        meeting.setEndTime(LocalTime.parse("10:00:00"));
         meeting.setCreatorID(3);
         meeting.setStatus("SCHEDULED");
         return meeting;
@@ -91,7 +91,7 @@ class MeetingRepositoryTest {
         when(jdbc.queryForObject(anyString(), eq(Integer.class), any(), any(), any()))
                 .thenReturn(0);
 
-        assertTrue(repository.isRoomAvailable(1, Time.valueOf("09:00:00"), Time.valueOf("10:00:00")));
+        assertTrue(repository.isRoomAvailable(1, LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00")));
     }
 
     @Test
@@ -99,7 +99,7 @@ class MeetingRepositoryTest {
         when(jdbc.queryForObject(anyString(), eq(Integer.class), any(), any(), any()))
                 .thenReturn(2);
 
-        assertFalse(repository.isRoomAvailable(1, Time.valueOf("09:00:00"), Time.valueOf("10:00:00")));
+        assertFalse(repository.isRoomAvailable(1, LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00")));
     }
 
     @Test
@@ -107,6 +107,6 @@ class MeetingRepositoryTest {
         when(jdbc.queryForObject(anyString(), eq(Integer.class), any(), any(), any()))
                 .thenReturn(null);
 
-        assertFalse(repository.isRoomAvailable(1, Time.valueOf("09:00:00"), Time.valueOf("10:00:00")));
+        assertFalse(repository.isRoomAvailable(1, LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00")));
     }
 }

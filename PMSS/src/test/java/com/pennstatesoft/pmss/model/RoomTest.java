@@ -2,7 +2,7 @@ package com.pennstatesoft.pmss.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -42,7 +42,7 @@ class RoomTest {
     @Test
     void addMeetingStoresMeeting() {
         Room room = new Room(1);
-        Meeting meeting = new Meeting(1, "Standup", Date.valueOf("2026-01-01"), 1);
+        Meeting meeting = new Meeting(1, "Standup", LocalDate.parse("2026-01-01"), 1);
 
         room.addMeeting(meeting);
 

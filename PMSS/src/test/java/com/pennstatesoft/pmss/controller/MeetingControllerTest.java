@@ -13,8 +13,8 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -52,9 +52,9 @@ class MeetingControllerTest {
     }
 
     private Meeting meetingOwnedBy(int creatorID) {
-        Meeting m = new Meeting(11, "Existing", Date.valueOf("2026-05-20"), 5);
-        m.setStartTime(Time.valueOf("09:00:00"));
-        m.setEndTime(Time.valueOf("10:00:00"));
+        Meeting m = new Meeting(11, "Existing", LocalDate.parse("2026-05-20"), 5);
+        m.setStartTime(LocalTime.parse("09:00:00"));
+        m.setEndTime(LocalTime.parse("10:00:00"));
         m.setCreatorID(creatorID);
         m.setStatus("SCHEDULED");
         return m;
