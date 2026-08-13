@@ -210,3 +210,64 @@
 2026-08-13 18:00:57 WARN  ROOM_DELETED admin=admin@pennstatesoft.com room=2
 2026-08-13 18:00:57 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=902
 2026-08-13 18:00:57 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=901
+2026-08-13 18:05:59 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/billing
+2026-08-13 18:05:59 INFO  BILLING_UPDATED by=client@pennstatesoft.com client=1
+2026-08-13 18:05:59 INFO  BILLING_UPDATED by=client@pennstatesoft.com client=1
+2026-08-13 18:05:59 INFO  BILLING_UPDATED by=client@pennstatesoft.com client=1
+2026-08-13 18:05:59 INFO  BILLING_UPDATED by=admin@pennstatesoft.com client=1
+2026-08-13 18:06:00 INFO  PROFILE_CHANGED user=client@pennstatesoft.com
+2026-08-13 18:06:00 INFO  PROFILE_CHANGED user=client@pennstatesoft.com
+2026-08-13 18:06:01 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Board Meeting"
+2026-08-13 18:06:01 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Mid-Morning"
+2026-08-13 18:06:01 INFO  MEETING_CREATED user=client@pennstatesoft.com meeting="Sprint Planning"
+2026-08-13 18:06:02 WARN  MEETING_DELETED user=client@pennstatesoft.com meetingID=1
+2026-08-13 18:06:02 WARN  ADMIN_ACCOUNT_CREATED creator=admin@pennstatesoft.com newAdmin=newadmin@pennstatesoft.com
+2026-08-13 18:06:03 INFO  CLIENT_ACCOUNT_CREATED user=mixedcase@pennstatesoft.com
+2026-08-13 18:06:03 INFO  CLIENT_ACCOUNT_CREATED user=newuser@pennstatesoft.com
+2026-08-13 18:06:03 INFO  ATTENDEE_ADDED user=client@pennstatesoft.com meetingID=1 participant=3
+2026-08-13 18:06:04 INFO  ATTENDEE_REMOVED user=client@pennstatesoft.com meetingID=1 participant=3
+2026-08-13 18:06:05 INFO  COMPLAINT_FILED user=client@pennstatesoft.com meetingID=0
+2026-08-13 18:06:05 INFO  COMPLAINT_RESPONDED admin=admin@pennstatesoft.com complaintID=1
+2026-08-13 18:06:07 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/reports/meetings.csv
+2026-08-13 18:06:07 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/reports
+2026-08-13 18:06:08 INFO  LOGIN_SUCCESS user=admin@pennstatesoft.com
+2026-08-13 18:06:08 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:08 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 18:06:08 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/landing
+2026-08-13 18:06:09 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:09 WARN  AUTHORIZATION_FAILURE user=admin@pennstatesoft.com path=/client/landing
+2026-08-13 18:06:09 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:09 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:09 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:09 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 18:06:09 WARN  LOGIN_FAILURE user=client@pennstatesoft.com
+2026-08-13 18:06:09 WARN  ACCOUNT_LOCKED user=client@pennstatesoft.com duration=15_minutes
+2026-08-13 18:06:10 INFO  LOGIN_SUCCESS user=client@pennstatesoft.com
+2026-08-13 18:06:10 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/rooms
+2026-08-13 18:06:10 WARN  ROOM_DELETED admin=admin@pennstatesoft.com room=2
+2026-08-13 18:06:10 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=902
+2026-08-13 18:06:10 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=901
+2026-08-13 18:06:49 WARN  LOGIN_FAILURE user=null
+2026-08-13 18:06:49 WARN  ACCOUNT_LOCKED user=null duration=15_minutes
+2026-08-13 18:06:49 WARN  AUTHORIZATION_FAILURE user=null path=null
+2026-08-13 18:06:49 INFO  LOGIN_SUCCESS user=a@x.com
+2026-08-13 18:06:49 WARN  LOGIN_FAILURE user=a@x.com
+2026-08-13 18:06:49 INFO  LOGOUT user=a@x.com
+2026-08-13 18:06:49 WARN  AUTHORIZATION_FAILURE user=a@x.com path=/admin
+2026-08-13 18:06:49 WARN  ADMIN_ACCOUNT_CREATED creator=admin@x.com newAdmin=new@x.com
+2026-08-13 18:06:49 INFO  CLIENT_ACCOUNT_CREATED user=a@x.com
+2026-08-13 18:06:49 INFO  PROFILE_CHANGED user=a@x.com
+2026-08-13 18:06:49 INFO  ROOM_CREATED admin=admin@x.com room=5
+2026-08-13 18:06:49 WARN  ROOM_DELETED admin=admin@x.com room=5
+2026-08-13 18:06:49 INFO  MEETING_CREATED user=a@x.com meeting="Sync"
+2026-08-13 18:06:49 WARN  MEETING_DELETED user=a@x.com meetingID=3
+2026-08-13 18:06:49 INFO  ATTENDEE_ADDED user=a@x.com meetingID=3 participant=9
+2026-08-13 18:06:49 INFO  ATTENDEE_REMOVED user=a@x.com meetingID=3 participant=9
+2026-08-13 18:06:49 INFO  BILLING_UPDATED by=a@x.com client=9
+2026-08-13 18:06:49 INFO  COMPLAINT_FILED user=a@x.com meetingID=3
+2026-08-13 18:06:49 INFO  COMPLAINT_RESPONDED admin=admin@x.com complaintID=3
+2026-08-13 18:06:49 WARN  ACCOUNT_LOCKED user=a@x.com duration=15_minutes
+2026-08-13 18:06:50 WARN  AUTHORIZATION_FAILURE user=client@pennstatesoft.com path=/admin/rooms
+2026-08-13 18:06:50 WARN  ROOM_DELETED admin=admin@pennstatesoft.com room=2
+2026-08-13 18:06:50 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=902
+2026-08-13 18:06:50 INFO  ROOM_CREATED admin=admin@pennstatesoft.com room=901
