@@ -2,8 +2,8 @@ package com.pennstatesoft.pmss.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,7 +18,7 @@ class MeetingTest {
     }
 
     private static Meeting sampleMeeting() {
-        return new Meeting(1, "Kickoff", Date.valueOf("2026-05-01"), 10);
+        return new Meeting(1, "Kickoff", LocalDate.parse("2026-05-01"), 10);
     }
 
     @Test
@@ -27,7 +27,7 @@ class MeetingTest {
 
         assertEquals(1, meeting.getMeetingID());
         assertEquals("Kickoff", meeting.getMeetingName());
-        assertEquals(Date.valueOf("2026-05-01"), meeting.getMeetingDate());
+        assertEquals(LocalDate.parse("2026-05-01"), meeting.getMeetingDate());
         assertEquals(10, meeting.getRoomNumber());
         assertTrue(meeting.getAttendees().isEmpty(), "attendee list starts empty");
     }
@@ -37,17 +37,17 @@ class MeetingTest {
         Meeting meeting = sampleMeeting();
 
         meeting.setMeetingName("Renamed");
-        meeting.setMeetingDate(Date.valueOf("2026-06-02"));
-        meeting.setStartTime(Time.valueOf("09:00:00"));
-        meeting.setEndTime(Time.valueOf("10:00:00"));
+        meeting.setMeetingDate(LocalDate.parse("2026-06-02"));
+        meeting.setStartTime(LocalTime.parse("09:00:00"));
+        meeting.setEndTime(LocalTime.parse("10:00:00"));
         meeting.setCreatorID(55);
         meeting.setRoomNumber(20);
         meeting.setStatus("SCHEDULED");
 
         assertEquals("Renamed", meeting.getMeetingName());
-        assertEquals(Date.valueOf("2026-06-02"), meeting.getMeetingDate());
-        assertEquals(Time.valueOf("09:00:00"), meeting.getStartTime());
-        assertEquals(Time.valueOf("10:00:00"), meeting.getEndTime());
+        assertEquals(LocalDate.parse("2026-06-02"), meeting.getMeetingDate());
+        assertEquals(LocalTime.parse("09:00:00"), meeting.getStartTime());
+        assertEquals(LocalTime.parse("10:00:00"), meeting.getEndTime());
         assertEquals(55, meeting.getCreatorID());
         assertEquals(20, meeting.getRoomNumber());
         assertEquals("SCHEDULED", meeting.getStatus());

@@ -13,8 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -36,7 +36,7 @@ class ScheduleControllerTest {
     private final MeetingRowMapper mapper = mock(MeetingRowMapper.class);
     private final ScheduleController controller = new ScheduleController(jdbc, userService, mapper);
 
-    private final List<Meeting> result = List.of(new Meeting(1, "M", Date.valueOf("2026-01-01"), 1));
+    private final List<Meeting> result = List.of(new Meeting(1, "M", LocalDate.parse("2026-01-01"), 1));
 
     private User user(String role) {
         return new Client(7, "u@pennstatesoft.com", "h", "L", "F", role,
@@ -73,7 +73,7 @@ class ScheduleControllerTest {
     @Test
     void getMeetingsByDayPassesDate() {
         stubQueryWithArgs();
-        assertSame(result, controller.getMeetingsByDay(Date.valueOf("2026-05-20")));
+        assertSame(result, controller.getMeetingsByDay(LocalDate.parse("2026-05-20")));
         verify(jdbc).query(anyString(), eq(mapper), eq("2026-05-20"));
     }
 
@@ -84,7 +84,7 @@ class ScheduleControllerTest {
         LocalDate monday = input.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate sunday = monday.plusDays(6);
 
-        controller.getMeetingsByWeek(Date.valueOf(input.toString()));
+        controller.getMeetingsByWeek(LocalDate.parse(input.toString()));
 
         verify(jdbc).query(anyString(), eq(mapper), eq(monday.toString()), eq(sunday.toString()));
     }
@@ -106,9 +106,9 @@ class ScheduleControllerTest {
     @Test
     void getMeetingsByTimeSlotPassesEndThenStart() {
         stubQueryWithArgs();
-        controller.getMeetingsByTimeSlot(Time.valueOf("09:00:00"), Time.valueOf("10:00:00"));
+        controller.getMeetingsByTimeSlot(LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00"));
         // SQL is "startTime < endParam AND endTime > startParam", so end is bound first.
-        verify(jdbc).query(anyString(), eq(mapper), eq("10:00:00"), eq("09:00:00"));
+        verify(jdbc).query(anyString(), eq(mapper), eq("10:00"), eq("09:00"));
     }
 
     // ---- displaySchedule dispatch ----

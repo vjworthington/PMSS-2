@@ -4,8 +4,8 @@ import com.pennstatesoft.pmss.model.Meeting;
 import com.pennstatesoft.pmss.repository.MeetingRepository;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,9 +26,9 @@ class MeetingServiceTest {
     private final MeetingService service = new MeetingService(repository);
 
     private Meeting meeting() {
-        Meeting m = new Meeting(1, "Sync", Date.valueOf("2026-04-01"), 12);
-        m.setStartTime(Time.valueOf("09:00:00"));
-        m.setEndTime(Time.valueOf("10:00:00"));
+        Meeting m = new Meeting(1, "Sync", LocalDate.parse("2026-04-01"), 12);
+        m.setStartTime(LocalTime.parse("09:00:00"));
+        m.setEndTime(LocalTime.parse("10:00:00"));
         return m;
     }
 

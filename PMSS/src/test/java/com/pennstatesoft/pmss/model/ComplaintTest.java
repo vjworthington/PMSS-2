@@ -2,7 +2,7 @@ package com.pennstatesoft.pmss.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,7 +58,7 @@ class ComplaintTest {
     @Test
     void settersAndGettersRoundTrip() {
         Complaint complaint = new Complaint(1, 0, "Other", "text");
-        Date filed = new Date(0L);
+        LocalDate filed = LocalDate.of(1970, 1, 1);
 
         complaint.setComplaintID(99);
         complaint.setMeetingID(5);

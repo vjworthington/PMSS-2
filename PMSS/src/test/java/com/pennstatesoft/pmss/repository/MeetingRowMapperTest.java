@@ -3,10 +3,10 @@ package com.pennstatesoft.pmss.repository;
 import com.pennstatesoft.pmss.model.Meeting;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -33,10 +33,10 @@ class MeetingRowMapperTest {
 
         assertEquals(12, meeting.getMeetingID());
         assertEquals("Planning", meeting.getMeetingName());
-        assertEquals(Date.valueOf("2026-07-04"), meeting.getMeetingDate());
+        assertEquals(LocalDate.parse("2026-07-04"), meeting.getMeetingDate());
         assertEquals(3, meeting.getRoomNumber());
-        assertEquals(Time.valueOf("09:00:00"), meeting.getStartTime());
-        assertEquals(Time.valueOf("10:00:00"), meeting.getEndTime());
+        assertEquals(LocalTime.parse("09:00:00"), meeting.getStartTime());
+        assertEquals(LocalTime.parse("10:00:00"), meeting.getEndTime());
         assertEquals(88, meeting.getCreatorID());
         assertEquals("SCHEDULED", meeting.getStatus());
     }
@@ -55,8 +55,8 @@ class MeetingRowMapperTest {
 
         Meeting meeting = mapper.mapRow(rs, 0);
 
-        assertEquals(Time.valueOf("09:00:00"), meeting.getStartTime());
-        assertEquals(Time.valueOf("17:00:00"), meeting.getEndTime());
+        assertEquals(LocalTime.parse("09:00:00"), meeting.getStartTime());
+        assertEquals(LocalTime.parse("17:00:00"), meeting.getEndTime());
     }
 
     @Test

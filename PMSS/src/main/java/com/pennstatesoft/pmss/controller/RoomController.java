@@ -55,6 +55,7 @@ public class RoomController {
 
         if (roomNumber == null || roomNumber <= 0) {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE, "Enter a valid room number.");
+            return ADMIN_ROOMS_URL;
         }
 
         Integer exists = jdbcTemplate.queryForObject(
@@ -62,6 +63,7 @@ public class RoomController {
         if (exists != null && exists > 0) {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     ROOM_STRING + roomNumber + " already exists.");
+            return ADMIN_ROOMS_URL;
         }
 
         String type = SPECIAL_STRING.equalsIgnoreCase(roomType) ? SPECIAL_STRING: "REGULAR";
@@ -95,6 +97,7 @@ public class RoomController {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     ROOM_STRING + roomNumber + " has " + meetings
                             + " meeting(s) and can't be deleted. Remove those meetings first.");
+            return ADMIN_ROOMS_URL;
         }
 
         jdbcTemplate.update("DELETE FROM Rooms WHERE roomNumber = ?", roomNumber);

@@ -72,16 +72,19 @@ public class ComplaintController {
         if (!validateMeetingSelection(meetingID, user.getUserID())) {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please select a meeting you attended, or leave it blank.");
+            return COMPLAINTS_URL;
         }
 
         if (!validateComplaintOption(complaintOption)) {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please select a valid complaint category.");
+            return COMPLAINTS_URL;
         }
 
         if (summary == null || summary.isBlank()) {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE,
                     "Please describe the issue before submitting.");
+            return COMPLAINTS_URL;
         }
 
         Complaint complaint = new Complaint(user.getUserID(), meetingID, complaintOption, summary);

@@ -181,27 +181,11 @@ class RegisterControllerTest {
         verify(jdbc).update(anyString(), any(), any(), any(), any(), any(), any(), any());
     }
 
-    // ---- submitAdminForm: duplicate-email check is inverted in the source ----
+    // ---- submitAdminForm ----
 
     @Test
-    void submitAdminFormTreatsAvailableEmailAsDuplicate() {
-        // Characterization: submitAdminForm calls `if (checkEmailUnique(email))`, so a
-        // unique (available) email is reported as already existing.
+    void submitAdminFormCreatesAdminOnValidUniqueEmail() {
         stubEmailCount(0); // unique / available
-        Authentication auth = mock(Authentication.class);
-        RedirectAttributesModelMap ra = new RedirectAttributesModelMap();
-
-        String view = controller.submitAdminForm("Jane", "Roe", "jane@pennstatesoft.com",
-                "passw0rd!", "1990-01-01", auth, ra);
-
-        assertEquals("redirect:/admin/register", view);
-        assertEquals("An account with that email already exists.", flashError(ra));
-    }
-
-    @Test
-    void submitAdminFormInsertsWhenEmailReportedTaken() {
-        // Because of the inverted check, insertion only happens when the count is positive.
-        stubEmailCount(1);
         when(passwordEncoder.encode(anyString())).thenReturn("hashed");
         Authentication auth = mock(Authentication.class);
         when(auth.getName()).thenReturn("admin@pennstatesoft.com");
@@ -214,5 +198,35 @@ class RegisterControllerTest {
         assertEquals("Administrator account created for jane@pennstatesoft.com.",
                 ra.getFlashAttributes().get("successMessage"));
         verify(securityLogger).adminAccountCreated("admin@pennstatesoft.com", "jane@pennstatesoft.com");
+        verify(jdbc).update(anyString(), any(), any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void submitAdminFormRejectsDuplicateEmailWithoutInserting() {
+        stubEmailCount(1); // not unique / already taken
+        Authentication auth = mock(Authentication.class);
+        RedirectAttributesModelMap ra = new RedirectAttributesModelMap();
+
+        String view = controller.submitAdminForm("Jane", "Roe", "jane@pennstatesoft.com",
+                "passw0rd!", "1990-01-01", auth, ra);
+
+        assertEquals("redirect:/admin/register", view);
+        assertEquals("An account with that email already exists.", flashError(ra));
+        verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any());
+        verify(securityLogger, never()).adminAccountCreated(anyString(), anyString());
+    }
+
+    @Test
+    void submitAdminFormRejectsInvalidInputWithoutInserting() {
+        Authentication auth = mock(Authentication.class);
+        RedirectAttributesModelMap ra = new RedirectAttributesModelMap();
+
+        String view = controller.submitAdminForm("", "", "jane@pennstatesoft.com",
+                "passw0rd!", "1990-01-01", auth, ra);
+
+        assertEquals("redirect:/admin/register", view);
+        assertEquals("First and last name are required.", flashError(ra));
+        verify(jdbc, never()).update(anyString(), any(), any(), any(), any(), any(), any(), any());
+        verify(securityLogger, never()).adminAccountCreated(anyString(), anyString());
     }
 }
